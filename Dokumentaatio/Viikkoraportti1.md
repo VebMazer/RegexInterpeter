@@ -7,3 +7,6 @@ aloittamiseen ja kurssin labtooliin rekisteröitymiseen.
 
 Aikaa projektin parissa kului 3h. Eniten aikaa kului 
 Regex lausekkeiden opiskelussa.
+
+Seuraavaksi vuorossa olisi itse ohjelman toteutuksen 
+suunnittelu ja ohjelmoinnin aloittaminen.
