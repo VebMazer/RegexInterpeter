@@ -57,6 +57,7 @@ public class UI {
      */
     public void defineSet() {
         System.out.print("Define the set: ");
+        interp.nextState = 0;
         interp.set = scanner.next();
     }
     

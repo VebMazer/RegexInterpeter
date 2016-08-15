@@ -1,18 +1,27 @@
 
 package interpreter;
 
-import java.util.ArrayList;
+import dataStructures.LinkedDeque;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Interpreter {
     public String set;
+    public LinkedDeque<LinkedDeque<State>> operationStack;
+    
     public String string;
-    public ArrayList<String> groups;
+    public Set<Character> inputSet;
+    
+    public int nextState;
     /**
      * Tulkin ydin luokka.
      */
     public Interpreter() {
         set = "";
         string = "";
+        operationStack = new LinkedDeque<LinkedDeque<State>>();
+        inputSet = new HashSet<Character>();
+        nextState = 0;
     }
     
     /**
@@ -22,21 +31,125 @@ public class Interpreter {
      * muuten false.
      */
     public boolean test(String str) {
+        nextState = 0;
         string = str;
-        groups();
+        createNFA();
         
+        System.out.println("Operation not supported yet.");
         return false;
     }
     
-    public void groups() {
-        ArrayList<Integer> starts = new ArrayList<Integer>();
-        for (int i = 0; i < string.length(); i++) {
-            if(string.charAt(i) == '(' && i == 0 || string.charAt(i) != '\\') {
-                starts.add(i+1);
-            } else if(string.charAt(i) == ')' && starts.size() > 0 && string.charAt(i) != '\\') {
-                groups.add(string.substring(starts.get(starts.size()), i));
-                starts.remove(starts.size()-1);
-            }
+    /**
+     * Metodin tarkoitus on luoda epädeterministinen äärellinen automaatti 
+     * säännöllisestä lausekkeesta(RegEx).
+     */
+    public void createNFA() {
+        
+    }
+    
+    /**
+     * Asettaa operaatio pinoon automaatin tiloista koostuvan jonon, joka 
+     * kuvaa siirtymää vastaanotetun merkin perusteella.
+     * @param character Merkki, jota seuraa tilan muutos.
+     */
+    public void push(char character) {
+        State s0 = new State(nextState++);
+        State s1 = new State(nextState++);
+        
+        s0.addTransition(character, s1);
+        
+        LinkedDeque NFADeque = new LinkedDeque();
+        NFADeque.addLast(s0);
+        NFADeque.addLast(s1);
+        
+        operationStack.addLast(NFADeque);
+        inputSet.add(character);
+    }
+    
+    /**
+     * Ottaa operaatio pinosta viimeksi lisätyn jonon.
+     * @return Automaatin tiloista koostuva jono.
+     */
+    public LinkedDeque<State> pop() {
+        return operationStack.pollLast();
+    }
+    
+    /**
+     * Muodostaa kahden merkin peräkkäin liittämistä kuvaavat tilat aiemmista
+     * jonoista ja lisää ne uutena jonona operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
+    public boolean concat() {
+        LinkedDeque<State> A, B;
+        if(operationStack.hasLast()) {
+            B = operationStack.pollLast();
+        } else return false;
+        if(operationStack.hasLast()) {
+            A = operationStack.pollLast();
+            
+            A.getLastElement().addTransition('0', B.getFirstElement());
+            A.connectDequeToLast(B);
+            
+            operationStack.addLast(A);
+            return true;
         }
+        return false;
+    }
+    
+    /**
+     * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
+     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
+    public boolean star() {
+        LinkedDeque<State> A;
+        if(!operationStack.hasLast()) return false;
+        A = operationStack.pollLast();
+        
+        State startState = new State(nextState++);
+        State endState = new State(nextState++);
+        
+        startState.addTransition('0', endState);
+        startState.addTransition('0', A.getFirstElement());
+        A.getLastElement().addTransition('0', endState);
+        A.getLastElement().addTransition('0', A.getFirstElement());
+        
+        A.addLast(endState);
+        A.addFirst(startState);
+        
+        operationStack.addLast(A);
+        
+        return true;
+    }
+    
+    /**
+     * Muodostaa liitto(|) operaatiota kuvaavat tilat aiemmista
+     * jonoista ja lisää ne uutena jonona operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
+    public boolean union() {
+        LinkedDeque<State> A, B;
+        if(operationStack.hasLast()) {
+            B = operationStack.pollLast();
+        } else return false;
+        if(operationStack.hasLast()) {
+            A = operationStack.pollLast();
+            
+            State startState = new State(nextState++);
+            State endState = new State(nextState++);
+            startState.addTransition('0', A.getFirstElement());
+            startState.addTransition('0', B.getFirstElement());
+            A.getLastElement().addTransition('0', endState);
+            B.getLastElement().addTransition('0', endState);
+            
+            B.addLast(endState);
+            A.addFirst(startState);
+            A.connectDequeToLast(B);
+            
+            operationStack.addLast(A);
+            
+            return true;
+        }
+        return false;
     }
 }
