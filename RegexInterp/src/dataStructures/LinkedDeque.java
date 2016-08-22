@@ -103,24 +103,6 @@ public class LinkedDeque<E> implements Iterable<E>{
     }
     
     /**
-     * Katsoo onko listan alussa elementtiä.
-     * @return Vastaus kysymykseen.
-     */
-    public boolean hasFirst() {
-        if(first != null) return true;
-        return false;
-    }
-    
-    /**
-     * Katsoo onko listan alussa elementtiä.
-     * @return Vastaus kysymykseen.
-     */
-    public boolean hasLast() {
-        if(last != null) return true;
-        return false;
-    }
-    
-    /**
      * Liittää parametrina saadun jonon tämän jonon
      * oikeaan loppuun.
      * @param deque Jonoon liitettävä jono.
@@ -139,6 +121,11 @@ public class LinkedDeque<E> implements Iterable<E>{
      * @return Listan alkioiden määrä.
      */
     public int size() {return size;}
+    
+    public boolean empty() {
+        if (size == 0) return true;
+        return false;
+    }
     
     /**
      * Iteraattorin palauttava metodi.

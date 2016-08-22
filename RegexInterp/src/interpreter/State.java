@@ -1,6 +1,7 @@
 
 package interpreter;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,8 +12,8 @@ import java.util.Set;
  */
 public class State {
     public int stateID;
-    Map<Character, Set<State>> transitions;
-    Set<State> consStates;
+    public Map<Character, Set<State>> transitions;
+    public Set<State> consStates;
     public boolean acceptingState;
     
     /**
@@ -21,6 +22,8 @@ public class State {
     public State() {
         stateID = -1;
         acceptingState = false;
+        consStates = new HashSet<>();
+        transitions = new HashMap<>();
     }
     
     /**
@@ -30,24 +33,57 @@ public class State {
     public State(int ID) {
         stateID = ID;
         acceptingState = false;
+        consStates = new HashSet<>();
+        transitions = new HashMap<>();
     }
     
     /**
      * Konstruktori, kun tunnistenumero ja joukko tiloja, joista tämä tila 
      * rakentuu on tarjottu.
      * @param ID
-     * @param NFAState 
+     * @param NFAStates 
      */
-    public State(int ID, Set<State> NFAState) {
+    public State(int ID, Set<State> NFAStates) {
         stateID = ID;
-        consStates = NFAState;
+        consStates = NFAStates;
         acceptingState = false;
-        Iterator<State> iterator = NFAState.iterator();
+        transitions = new HashMap<>();
+        //combineTransitions();
+        Iterator<State> iterator = NFAStates.iterator();
         while(iterator.hasNext()) {
             if(iterator.next().acceptingState) {
                 acceptingState = true;
                 break;
             }
+        }
+    }
+    
+    /**
+     * Lisää kaikki consStates muuttujan sisältämien tilojen tilanmuutokset
+     * tämän tilan tilanmuutos mappiin.
+     */
+    public void combineTransitions() {
+        Iterator<State> iterState = consStates.iterator();
+        while(iterState.hasNext()) {
+            State currentState = iterState.next();
+            Iterator<Character> iterChar = currentState.transitions.keySet().iterator();
+            while(iterChar.hasNext()) {
+                char c = iterChar.next();
+                addTransitions(c, currentState.getTransitions(c));
+            }
+            
+        }
+    }
+    
+    /**
+     * Lisää tilanmuutoksia.
+     * @param c Merkki joka kuvautuu lisättäviin tiloihin.
+     * @param states Tilat joihin tilanmuunnokset kohdistuvat.
+     */
+    public void addTransitions(char c, Set<State> states) {
+        Iterator<State> stateIterator = states.iterator();
+        while(stateIterator.hasNext()) {
+            addTransition(c, stateIterator.next());
         }
     }
     
@@ -109,6 +145,31 @@ public class State {
     }
     
     /**
+     * Metodi palauttaa joukon kaikista niistä merkeistä, jotka johtavat tilanmuutoksiin
+     * jossakin tämän tilan sisältämässä tilassa.
+     * @return Joukko tiloja, jotka johtavat tilanmuutokseen jossakin tämän tilan sisältämässä tilassa.
+     */
+    public Set<Character> getAllTransitInputs() {
+        Set<Character> inputs = new HashSet<Character>();
+        if(!consStates.isEmpty()) {
+            Iterator<State> iterator1 = consStates.iterator();
+            while(iterator1.hasNext()) {
+                State state = iterator1.next();
+                Set<Character> characters = state.transitions.keySet();
+                if(!characters.isEmpty()) {
+                    Iterator<Character> iterator2 = characters.iterator();
+                    while(iterator2.hasNext()) {
+                        inputs.add(iterator2.next());
+                    }
+                }
+            }
+        }
+        inputs.remove('0');
+        return inputs;
+    }
+    
+    
+    /**
      * Testaa onko verrattava olio sama, kuin tämä olio.
      * @param ob Verrattava olio.
      * @return Palauttaa true jos tämä ja parametri objekti ovat samoja
@@ -117,7 +178,12 @@ public class State {
     public boolean equals(Object ob) {
         if(ob.getClass() != this.getClass()) return false;
         State state = (State) ob;
-        if(this.stateID != state.stateID) return false;
-        return true;
+        if(this.stateID == state.stateID) return true;
+        return false;
+    }
+    
+    @Override
+    public String toString() {
+        return "(" + stateID + transitions.keySet() + ")";
     }
 }

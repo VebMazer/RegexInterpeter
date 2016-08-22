@@ -2,8 +2,11 @@
 package ui;
 
 import interpreter.Interpreter;
+import interpreter.State;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Luokka toimii teksti käyttöliittymänä tulkkia varten.
@@ -34,7 +37,8 @@ public class UI {
         while(true) {
             System.out.println("");
             System.out.println("Enter one of the following commands:");
-            System.out.println("defset (Define the regular expression form.)");
+            System.out.println("defregex (Define the regular expression form.)");
+            System.out.println("showdfa (Map current DFA data)");
             System.out.println("testString (Test whether or not a string is of the defined form.)");
             System.out.println("results (Prints the results of all the tests you have made so far.)");
             System.out.println("exit (Exits the program.)");
@@ -44,7 +48,8 @@ public class UI {
             input = scanner.next();
             System.out.println("");
             
-            if(input.equals("defset")) defineSet();
+            if(input.equals("defregex")) defineSet();
+            else if(input.equals("showdfa")) mapDFA();
             else if(input.equals("testString")) testString();
             else if(input.equals("results")) printResults();
             else if(input.equals("exit")) break;
@@ -56,9 +61,9 @@ public class UI {
      * merkkijonon tulkin käytettäväksi.
      */
     public void defineSet() {
-        System.out.print("Define the set: ");
+        System.out.print("Define the RegEx: ");
         interp.nextState = 0;
-        interp.set = scanner.next();
+        interp.constructRegex(scanner.next());
     }
     
     /**
@@ -81,6 +86,29 @@ public class UI {
     public void printResults() {
         for (int i = 0; i < strings.size(); i++) {
             System.out.println(strings.get(i) + ":   " + booleans.get(i));
+        }
+    }
+    
+    public void mapDFA() {
+        traverseDFA(interp.regexDFADeque.getFirstElement(), 0, 'R');
+    }
+    
+    public void traverseDFA(State state, int i, char from) {
+        Set<Character> characters = state.transitions.keySet();
+        Iterator<Character> chIter = characters.iterator();
+        System.out.print(from + "-" + i + "-");
+        while(chIter.hasNext()) {
+            System.out.print(chIter.next());
+        }
+        System.out.println("");
+        chIter = characters.iterator();
+        while(chIter.hasNext()) {
+            char c = chIter.next();
+            Iterator<State> iterSt = state.getTransitions(c).iterator();
+            while(iterSt.hasNext()) {
+                State st = iterSt.next();
+                if(!st.equals(state)) traverseDFA(st, i+1, c);
+            }
         }
     }
 }
