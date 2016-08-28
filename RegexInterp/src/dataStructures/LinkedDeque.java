@@ -109,10 +109,10 @@ public class LinkedDeque<E> implements Iterable<E>{
      */
     public void connectDequeToLast(LinkedDeque<E> deque) {
         if(deque != null) {
-            this.size += deque.size();
             this.last.right = deque.first;
             deque.first.left = this.last;
             this.last = deque.last;
+            this.size += deque.size();
         }
     }
     

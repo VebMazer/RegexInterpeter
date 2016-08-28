@@ -21,9 +21,9 @@ public class UI {
      * Luokan konstruktori.
      */
     public UI() {
-        interp = new Interpreter();
-        strings = new ArrayList<String>();
-        booleans = new ArrayList<Boolean>();
+        interp = new Interpreter(this); //parameter given for testing
+        strings = new ArrayList<>();
+        booleans = new ArrayList<>();
         scanner = new Scanner(System.in);
     }
     
@@ -38,8 +38,9 @@ public class UI {
             System.out.println("");
             System.out.println("Enter one of the following commands:");
             System.out.println("defregex (Define the regular expression form.)");
+            //System.out.println("shownfa (Map current NFA data)");
             System.out.println("showdfa (Map current DFA data)");
-            System.out.println("testString (Test whether or not a string is of the defined form.)");
+            System.out.println("testString (Test whether or not a string traverses the regex automata.)");
             System.out.println("results (Prints the results of all the tests you have made so far.)");
             System.out.println("exit (Exits the program.)");
             System.out.println("");
@@ -49,6 +50,7 @@ public class UI {
             System.out.println("");
             
             if(input.equals("defregex")) defineSet();
+            //else if(input.equals("shownfa")) mapNFA();
             else if(input.equals("showdfa")) mapDFA();
             else if(input.equals("testString")) testString();
             else if(input.equals("results")) printResults();
@@ -64,6 +66,8 @@ public class UI {
         System.out.print("Define the RegEx: ");
         interp.nextState = 0;
         interp.constructRegex(scanner.next());
+        strings = new ArrayList<>();
+        booleans = new ArrayList<>();
     }
     
     /**
@@ -87,6 +91,10 @@ public class UI {
         for (int i = 0; i < strings.size(); i++) {
             System.out.println(strings.get(i) + ":   " + booleans.get(i));
         }
+    }
+    
+    public void mapNFA(State startingState) {
+        traverseDFA(startingState, 0, 'R');
     }
     
     public void mapDFA() {

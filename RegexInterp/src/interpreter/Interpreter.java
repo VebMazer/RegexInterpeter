@@ -5,6 +5,7 @@ import dataStructures.LinkedDeque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import ui.UI;
 
 public class Interpreter {
     public String regex;
@@ -16,16 +17,19 @@ public class Interpreter {
     public Set<Character> inputSet;
     
     public int nextState;
+    
+    public UI ui;   //variable for testing
     /**
      * Tulkin ydin luokka.
      */
-    public Interpreter() {
+    public Interpreter(UI ui) {
         regex = "";
         string = "";
         operationStack = new LinkedDeque<>();
         functionStack = new LinkedDeque<>();
         //inputSet = new HashSet<>();
         nextState = 0;
+        this.ui = ui;
     }
     
     /**
@@ -100,12 +104,18 @@ public class Interpreter {
             else if(c == '(') functionStack.addLast(c);
             else if(c == ')') {
                 while( functionStack.getLastElement() != '(') {
-                    if(!evaluate()) return false;
+                    if(!evaluate()) {
+                        System.out.println("Fail at 1st, i:"+i); //DebuggingLine
+                        return false;
+                    }
                 }
                 functionStack.pollLast();
             } else {
-                while(!functionStack.empty() && priority(c, functionStack.pollLast())) {
-                    if(!evaluate()) return false;
+                while(!functionStack.empty() && priority(c, functionStack.getLastElement())) {
+                    if(!evaluate()) {
+                        System.out.println("Fail at 2nd, i:"+i); //DebuggingLine
+                        return false;
+                    }
                 }
                 functionStack.addLast(c);
             }
@@ -117,6 +127,10 @@ public class Interpreter {
         
         if(operationStack.empty()) return false;
         operationStack.getLastElement().getLastElement().acceptingState = true;
+        
+        System.out.println("");
+        //ui.mapNFA(operationStack.getLastElement().getFirstElement()); //testing line
+        
         return true;
     }
     
@@ -233,17 +247,38 @@ public class Interpreter {
     public boolean evaluate() {
         if(!functionStack.empty()) {
             char functionChar = functionStack.pollLast();
-            switch(functionChar) {
-                case 8: return concat();
-                case '|': return union();
-                case '*': return star();
+//            switch(functionChar) {
+//                case '¤': return concat();
+//                case '|': return union();
+//                case '*': return star();
+//            }
+            switch(functionChar) {  //Test version
+                case '¤': if(concat()) {
+                    return true;
+                } else {
+                    System.out.println("ConcatFailed!");
+                    return false;
+                }
+                case '|': if(union()) {
+                    return true;
+                } else {
+                    System.out.println("UnionFailed!");
+                    return false;
+                }
+                case '*': if(star()) {
+                    return true;
+                } else {
+                    System.out.println("StarFailed!");
+                    return false;
+                }
             }
-        }
+        } else System.out.println("Stack empty!"); //Test line
+        System.out.println("Eval fail!"); //testLine
         return false;
     }
     
     public boolean functionalInput(char c) {
-        if(c == 8 || c == '|' || c == '*' || c == '(' || c == ')')  return true;
+        if(c == '¤' || c == '|' || c == '*' || c == '(' || c == ')')  return true;
         return false;
     }
     
@@ -251,8 +286,8 @@ public class Interpreter {
         if(left == right) return true;
         else if(left == '*') return false;
         else if(right == '*') return true;
-        else if(left == 8) return false;
-        else if(right == 8) return true;
+        else if(left == '¤') return false;
+        else if(right == '¤') return true;
         else if(left == '|') return false;
         
         return true;
@@ -271,12 +306,13 @@ public class Interpreter {
             evalRegex += cLeft;
             if(!functionalInput(cLeft) || cLeft == ')' || cLeft == '*') {
                 if(!functionalInput(cRight) || cRight == '(') {
-                    char ch = 8;
+                    char ch = '¤';
                     evalRegex += ch;
                 } 
             }
         }
         evalRegex += regex.charAt(regex.length()-1);
+        System.out.println(evalRegex);//Testing line!
         return evalRegex;
     }
     
@@ -291,7 +327,7 @@ public class Interpreter {
         
         s0.addTransition(character, s1);
         
-        LinkedDeque NFADeque = new LinkedDeque<State>();
+        LinkedDeque NFADeque = new LinkedDeque<>();
         NFADeque.addLast(s0);
         NFADeque.addLast(s1);
         

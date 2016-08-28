@@ -181,6 +181,13 @@ public class State {
         if(this.stateID == state.stateID) return true;
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + this.stateID;
+        return hash;
+    }
     
     @Override
     public String toString() {

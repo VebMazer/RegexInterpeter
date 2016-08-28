@@ -13,9 +13,17 @@ import java.util.Iterator;
 
 public class DataStructuresTest {
     LinkedDeque<Integer> deque;
+    CustomSet<Integer> set1;
+    CustomSet<Integer> set2;
+    CustomMap<Integer, String> map1;
+    CustomMap<Integer, String> map2;
     
     public DataStructuresTest() {
-        deque = new LinkedDeque<Integer>();
+        deque = new LinkedDeque<>();
+        set1 = new CustomSet<>();
+        set2 = new CustomSet<>();
+        map1 = new CustomMap<>();
+        map2 = new CustomMap<>();
     }
     
     @BeforeClass
@@ -38,7 +46,7 @@ public class DataStructuresTest {
      * Alustaa jonon.
      */
     public void initializeDeque() {
-        deque = new LinkedDeque<Integer>();
+        deque = new LinkedDeque<>();
     }
     
     /**
@@ -156,4 +164,150 @@ public class DataStructuresTest {
         }
         assertEquals(fail, false);
     }
+    
+    public void initializeSet() {
+        set1 = new CustomSet<>();
+    }
+    
+    public void setupSet1() {
+        initializeSet();
+        set1.add(2);
+        set1.add(3);
+        set1.add(1);
+        set1.add(4);
+        set1.add(5);
+        set1.add(6);
+    }
+    
+    @Test
+    public void setTest1() {
+        setupSet1();
+        assertEquals(6, set1.size());
+    }
+    
+    @Test
+    public void setTest2() {
+        setupSet1();
+        set1.remove(1);
+        set1.add(5);
+        set1.add(7);
+        set1.add(8);
+        assertEquals(7, set1.size());
+    }
+    
+    public void setupSet2() {
+        set2 = new CustomSet<>();
+        set2.add(2);
+        set2.add(-1);
+        set2.add(-3);
+        set2.add(-2);
+        set2.add(3);
+    }
+    
+    @Test
+    public void setTest3() {
+        setupSet1();
+        setupSet2();
+        set1.addAll(set2);
+        assertEquals(9, set1.size());
+    }
+    
+    @Test
+    public void setTest4() {
+        setupSet1();
+        setupSet2();
+        set1.removeAll(set2);
+        assertEquals(4, set1.size());
+    }
+    
+    @Test
+    public void setTest5() {
+        setupSet1();
+        boolean failed = false;
+        if(!set1.contains(2)) failed = true;
+        if(set1.contains(8)) failed = true;
+        if(!set1.contains(3)) failed = true;
+        if(set1.contains(-2)) failed = true;
+        assertEquals(true, !failed);
+    }
+    
+    @Test
+    public void setIterationTest1() {
+        setupSet1();
+        boolean failed = false;
+        Iterator<Integer> iterator = set1.iterator();
+        if(iterator.next() != 2) failed = true;
+        if(!iterator.hasNext()) failed = true;
+        if(iterator.next() != 3) failed = true;
+        if(iterator.next() != 1) failed = true;
+        if(iterator.next() != 4) failed = true;
+        if(iterator.next() != 5) failed = true;
+        if(iterator.next() != 6) failed = true;
+        if(iterator.hasNext()) failed = true;
+        assertEquals(true, !failed);
+    }
+    
+    public void initializeMap1() {
+        map1 = new CustomMap<>();
+    }
+    
+    public void setupMap1() {
+        map1.put(1, "abcde");
+        map1.put(2, "fghij");
+        map1.put(3, "klmno");
+        map1.put(4, "pqrst");
+        map1.put(-1, "ab");
+        map1.put(2, "cd");
+        map1.put(-3, "ef");
+        map1.put(-4, "gh");
+    }
+    
+    public void setupMap2() {
+        map2.put(11, "qwe");
+        map2.put(12, "asd");
+        map2.put(13, "zxc");
+        map2.put(12, "rty");
+        map2.put(13, "fgh");
+        map2.put(14, "vbn");
+        map2.put(4, "uio");
+        map2.put(-3, "cc");
+        
+    }
+    
+    @Test
+    public void mapTest1() {
+        setupMap1();
+        assertEquals("klmno", map1.get(3));
+    }
+    
+    @Test
+    public void mapTest2() {
+        setupMap1();
+        assertEquals("cd", map1.get(2));
+    }
+    
+    @Test
+    public void mapTest3() {
+        setupMap1();
+        assertEquals(false, "fghij".equals(map1.get(2)));
+    }
+    
+    @Test
+    public void mapTest4() {
+        setupMap1();
+        assertEquals(7, map1.size());
+    }
+    
+    @Test
+    public void mapTest5() {
+        setupMap1();
+        setupMap2();
+        map1.putAll(map2);
+        boolean failed = false;
+        if(map1.size() != 11) failed = true;
+        if(!map1.get(4).equals("uio")) failed = true;
+        if(!map1.get(-3).equals("cc")) failed = true;
+        assertEquals(false, failed);
+    }
+    
 }
