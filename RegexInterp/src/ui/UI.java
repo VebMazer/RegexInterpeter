@@ -33,6 +33,8 @@ public class UI {
      */
     public void run() {
         System.out.println("Welcome to VebMazers Regular expression interpreter. ");
+        System.out.println("Currently only has functions for concatenation, operators: '|', '*'");
+        System.out.println("and also understands how to use parenthesis: '(' ')'");
         String input = "";
         while(true) {
             System.out.println("");
