@@ -11,7 +11,10 @@ import java.util.Set;
  * Äärellisen automaatin tilaa kuvaava luokka.
  */
 public class State {
-    public int stateID;
+    
+    //Käytetään myös selvittämään tilojen toisistaan seuraavuutta.
+    public int stateID;         
+    
     public Map<Character, Set<State>> transitions;
     public Set<State> consStates;
     public boolean acceptingState;

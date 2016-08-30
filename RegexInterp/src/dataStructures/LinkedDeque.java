@@ -123,8 +123,7 @@ public class LinkedDeque<E> implements Iterable<E>{
     public int size() {return size;}
     
     public boolean empty() {
-        if (size == 0) return true;
-        return false;
+        return size == 0;
     }
     
     /**
