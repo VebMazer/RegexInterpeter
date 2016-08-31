@@ -1,8 +1,10 @@
 
 package interpreter;
 
-import java.util.HashMap;
-import java.util.HashSet;
+//import java.util.HashMap;
+//import java.util.HashSet;
+import dataStructures.CustomMap;
+import dataStructures.CustomSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -25,8 +27,10 @@ public class State {
     public State() {
         stateID = -1;
         acceptingState = false;
-        consStates = new HashSet<>();
-        transitions = new HashMap<>();
+//        consStates = new HashSet<>();
+//        transitions = new HashMap<>();
+        consStates = new CustomSet<>();
+        transitions = new CustomMap<>();
     }
     
     /**
@@ -36,8 +40,10 @@ public class State {
     public State(int ID) {
         stateID = ID;
         acceptingState = false;
-        consStates = new HashSet<>();
-        transitions = new HashMap<>();
+//        consStates = new HashSet<>();
+//        transitions = new HashMap<>();
+        consStates = new CustomSet<>();
+        transitions = new CustomMap<>();
     }
     
     /**
@@ -50,7 +56,8 @@ public class State {
         stateID = ID;
         consStates = NFAStates;
         acceptingState = false;
-        transitions = new HashMap<>();
+        //transitions = new HashMap<>();
+        transitions = new CustomMap<>();
         //combineTransitions();
         Iterator<State> iterator = NFAStates.iterator();
         while(iterator.hasNext()) {
@@ -99,7 +106,8 @@ public class State {
         if(transitions.containsKey(character)) {
             transitions.get(character).add(state);
         } else {
-            HashSet<State> states = new HashSet<State>();
+            //HashSet<State> states = new HashSet<>();
+            Set<State> states = new CustomSet<>();
             states.add(state);
             transitions.put(character, states);
         }
@@ -153,7 +161,8 @@ public class State {
      * @return Joukko tiloja, jotka johtavat tilanmuutokseen jossakin tämän tilan sisältämässä tilassa.
      */
     public Set<Character> getAllTransitInputs() {
-        Set<Character> inputs = new HashSet<Character>();
+        //Set<Character> inputs = new HashSet<Character>();
+        Set<Character> inputs = new CustomSet<>();
         if(!consStates.isEmpty()) {
             Iterator<State> iterator1 = consStates.iterator();
             while(iterator1.hasNext()) {
@@ -179,6 +188,7 @@ public class State {
      */
     @Override
     public boolean equals(Object ob) {
+        if(ob == null) return false;
         if(ob.getClass() != this.getClass()) return false;
         State state = (State) ob;
         if(this.stateID == state.stateID) return true;

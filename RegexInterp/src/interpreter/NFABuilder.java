@@ -1,8 +1,9 @@
 
 package interpreter;
 
+import dataStructures.CustomSet;
 import dataStructures.LinkedDeque;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -24,7 +25,8 @@ public class NFABuilder {
         this.operationStack = interpreter.operationStack;
         this.functionStack = interpreter.functionStack;
         
-        allNFAStates = new HashSet<>();
+        //allNFAStates = new HashSet<>();
+        allNFAStates = new CustomSet<>();
     }
     
      /**
@@ -65,9 +67,6 @@ public class NFABuilder {
         if(operationStack.empty()) return false;
         operationStack.getLastElement().getLastElement().acceptingState = true;
         
-//        System.out.println("");
-//        interpreter.ui.mapNFA(operationStack.getLastElement().getFirstElement()); //testing line
-
         return true;
     }
     

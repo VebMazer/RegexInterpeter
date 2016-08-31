@@ -1,11 +1,10 @@
 
 package interpreter;
 
+import dataStructures.CustomSet;
 import dataStructures.LinkedDeque;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import ui.UI;
 
 public class Interpreter {
     public String regex;
@@ -43,7 +42,7 @@ public class Interpreter {
             System.out.println("No regex defined");
             return false;
         } 
-        return testString(0, string.length(), regexDFADeque.getFirstElement());
+        return traverseString(0, string.length(), regexDFADeque.getFirstElement());
     }
     
     /**
@@ -53,7 +52,7 @@ public class Interpreter {
      * @param state Tila jonka kohdalla ollaan rekursiossa.
      * @return Palauttaa true jos merkkijono läpäisee testin.
      */
-    public boolean testString(int i, int length, State state) {
+    public boolean traverseString(int i, int length, State state) {
         if(i >= length) return true;
 //        if(state.acceptingState) return true;
 //        else if(i >= length) return false;
@@ -61,10 +60,39 @@ public class Interpreter {
         if(states != null && !states.isEmpty()) {
             Iterator<State> iterator = states.iterator();
             while(iterator.hasNext()) {
-                if(testString(i+1, length, iterator.next())) return true;
+                if(traverseString(i+1, length, iterator.next())) return true;
             }
         }
         return false;
+    }
+    
+    public Set<String> findMatchingStrings(String inputString) {
+        Set<String> matches = new CustomSet<>();
+        int index = 0;
+        while(index < inputString.length()) {
+            String str = buildMatch(index, "", inputString, regexDFADeque.getFirstElement());
+            if(!str.equals("")) {
+                matches.add(str);
+                index += str.length();
+            } else index++;
+        }
+        return matches;
+    }
+    
+    public String buildMatch(int index, String consStr, String inputString, State state) {
+            if(index < inputString.length()) {
+                char c = inputString.charAt(index);
+                Set<State> states = state.getTransitions(c);
+                if(states != null && states.size() > 0) {
+                    //DFA States only ever have one following state for an input character.
+                    return buildMatch(index+1, consStr+c, inputString, states.iterator().next());
+                } else {
+                    if(state.acceptingState) return consStr;
+                    return "";
+                }
+            }
+            if(state.acceptingState) return consStr;
+            return "";
     }
     
     /**
@@ -80,7 +108,7 @@ public class Interpreter {
         nfaBuilder = new NFABuilder(this);
         if(!nfaBuilder.createNFA()) System.out.println("Failed to create NFA");
         else {
-            nfaBuilder.printAllStates();
+            //nfaBuilder.printAllStates();
             dfaBuilder = new DFABuilder(this);
             if(!dfaBuilder.NFAtoDFA()) System.out.println("Failed to transform NFA to DFA");  
             else {

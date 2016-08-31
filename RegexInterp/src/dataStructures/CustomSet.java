@@ -93,7 +93,7 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         return false;
     }
     
-        @Override
+    @Override
     public boolean containsAll(Collection<?> c) {
         Iterator<?> iterator = c.iterator();
         while(iterator.hasNext()) {
@@ -101,7 +101,16 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         }
         return true;
     }
-
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(this.getClass() != o.getClass()) return false;
+        Set set = (Set) o;
+        if(this.size() != set.size()) return false;
+        return this.containsAll(set);
+    }
+    
     @Override
     public Object[] toArray() {
         return reSizeArray(size);

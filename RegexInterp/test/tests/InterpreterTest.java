@@ -2,13 +2,13 @@
 package tests;
 
 import interpreter.Interpreter;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import ui.UI;
 
 /**
  *
@@ -98,5 +98,32 @@ public class InterpreterTest {
         if(!interpreter.testTraversal("axadvgvgneeeenccdffff")) fails = true;
         assertEquals(true, !fails);
     }
+    
+    @Test
+    public void testTraversalRegEx2_matchTest1() {
+        defRegEx2();
+        boolean fails = false;
+        Set<String> matches = interpreter.findMatchingStrings("ddaxadncdfddaxabdneeeeneeeeccdffffdd");
+        if(!matches.contains("axadncdf")) fails = true;
+        if(!matches.contains("axabdneeeeneeeeccdffff")) fails = true;
+        if(matches.size() != 2) fails = true;
+        assertEquals(true, !fails);
+    }
+    
+    public void defRegEx3(){
+        interpreter.constructRegEx("ac(de|dn)");
+    }
+    
+    @Test
+    public void testTraversalRegEx3_manyTests() {
+        defRegEx3();
+        boolean fails = false;
+        if(!interpreter.testTraversal("acde")) fails = true;
+        if(!interpreter.testTraversal("acdn")) fails = true;
+        if(interpreter.testTraversal("acdnd")) fails = true;
+        assertEquals(true, !fails);
+    }
+    
+    
     
 }
