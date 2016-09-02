@@ -1,8 +1,6 @@
 
 package interpreter;
 
-//import java.util.HashMap;
-//import java.util.HashSet;
 import dataStructures.CustomMap;
 import dataStructures.CustomSet;
 import java.util.Iterator;
@@ -27,8 +25,6 @@ public class State {
     public State() {
         stateID = -1;
         acceptingState = false;
-//        consStates = new HashSet<>();
-//        transitions = new HashMap<>();
         consStates = new CustomSet<>();
         transitions = new CustomMap<>();
     }
@@ -40,8 +36,6 @@ public class State {
     public State(int ID) {
         stateID = ID;
         acceptingState = false;
-//        consStates = new HashSet<>();
-//        transitions = new HashMap<>();
         consStates = new CustomSet<>();
         transitions = new CustomMap<>();
     }
@@ -56,32 +50,13 @@ public class State {
         stateID = ID;
         consStates = NFAStates;
         acceptingState = false;
-        //transitions = new HashMap<>();
         transitions = new CustomMap<>();
-        //combineTransitions();
         Iterator<State> iterator = NFAStates.iterator();
         while(iterator.hasNext()) {
             if(iterator.next().acceptingState) {
                 acceptingState = true;
                 break;
             }
-        }
-    }
-    
-    /**
-     * Lisää kaikki consStates muuttujan sisältämien tilojen tilanmuutokset
-     * tämän tilan tilanmuutos mappiin.
-     */
-    public void combineTransitions() {
-        Iterator<State> iterState = consStates.iterator();
-        while(iterState.hasNext()) {
-            State currentState = iterState.next();
-            Iterator<Character> iterChar = currentState.transitions.keySet().iterator();
-            while(iterChar.hasNext()) {
-                char c = iterChar.next();
-                addTransitions(c, currentState.getTransitions(c));
-            }
-            
         }
     }
     
@@ -106,7 +81,6 @@ public class State {
         if(transitions.containsKey(character)) {
             transitions.get(character).add(state);
         } else {
-            //HashSet<State> states = new HashSet<>();
             Set<State> states = new CustomSet<>();
             states.add(state);
             transitions.put(character, states);

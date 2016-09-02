@@ -3,7 +3,6 @@ package interpreter;
 
 import dataStructures.CustomSet;
 import dataStructures.LinkedDeque;
-//import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -12,8 +11,15 @@ public class NFABuilder {
     public Interpreter interpreter;
     
     public String regex;
+    public String evalRegEx;
     public LinkedDeque<LinkedDeque<State>> operationStack;
     public LinkedDeque<Character> functionStack;
+//    public final String alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+//    public final String alphabetEval = "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|å|ä|ö";
+//    public final String capsAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
+//    public final String capsAlphabetEval = "A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|Å|Ä|Ö";
+//    public final String numbers = "0123456789";
+//    public final String numbersEval = "0|1|2|3|4|5|6|7|8|9";
     
     //Monitoring Group
     public Set<State> allNFAStates;
@@ -25,7 +31,6 @@ public class NFABuilder {
         this.operationStack = interpreter.operationStack;
         this.functionStack = interpreter.functionStack;
         
-        //allNFAStates = new HashSet<>();
         allNFAStates = new CustomSet<>();
     }
     
@@ -35,16 +40,27 @@ public class NFABuilder {
      * @return Palauttaa true jos operaatio onnistui.
      */
     public boolean createNFA() {
-        String evalRegex = makeEvalRegex();
-        for (int i = 0; i < evalRegex.length(); i++) {
-            char c = evalRegex.charAt(i);
-            if(!functionalInput(c)) push(c); 
+        evalRegEx = makeEvalRegex();
+        boolean wasBackSlash = false;
+        for (int i = 0; i < evalRegEx.length(); i++) {
+            char c = evalRegEx.charAt(i);
+            //-----------------untested section below---------------
+            if(c == '\\' && !wasBackSlash) wasBackSlash = true;
+            else if(wasBackSlash) {
+                if(c != '¤') {
+                    push(c);
+                    wasBackSlash = false;
+                }
+            }
+            //else if(c == '[') i += evalUnionGroup(i);
+            //else if(c == '.') ;
+            //-------------------untested model above-----------------
+            else if(!functionalInput(c)) push(c); 
             else if(functionStack.empty()) functionStack.addLast(c);
             else if(c == '(') functionStack.addLast(c);
             else if(c == ')') {
                 while( functionStack.getLastElement() != '(') {
                     if(!evaluate()) {
-                        System.out.println("Fail at 1st, i:"+i); //DebuggingLine
                         return false;
                     }
                 }
@@ -52,7 +68,6 @@ public class NFABuilder {
             } else {
                 while(!functionStack.empty() && priority(c, functionStack.getLastElement())) {
                     if(!evaluate()) {
-                        System.out.println("Fail at 2nd, i:"+i); //DebuggingLine
                         return false;
                     }
                 }
@@ -76,72 +91,109 @@ public class NFABuilder {
      * @return Evaluointiin valmis regex merkkijono.
      */
     public String makeEvalRegex() {
-        String evalRegex = "";
-        for (int i = 0; i < regex.length()-1; i++) {
-            char cLeft = regex.charAt(i);
-            char cRight = regex.charAt(i+1);
-            evalRegex += cLeft;
+//        String evalRegex1 = "";
+//        //Adding things prior to adding concatenations.
+//        for (int i = 0; i < regex.length(); i++) {
+//            if(regex.charAt(i) == '[' && i-1 >= 0 && regex.charAt(i-1) != '\\') {
+//                int groupLength = unionGroupLength(i);
+//                evalRegex1 += unionGroupEvalString(i+1, i+groupLength-1);
+//                i += groupLength-1;
+//            } else if(regex.charAt(i) == '.' && i-1 >= 0 && regex.charAt(i-1) != '\\') {
+//                evalRegex1 += alphabetEval + '|' + capsAlphabetEval + '|' + numbersEval;
+//            } else evalRegex1 += regex.charAt(i);
+//        }
+        String evalRegex1 = regex;
+        String evalRegex2 = "";
+        //Adding concatenations
+        for (int i = 0; i < evalRegex1.length()-1; i++) {
+            char cLeft = evalRegex1.charAt(i);
+            char cRight = evalRegex1.charAt(i+1);
+            evalRegex2 += cLeft;
             if(!functionalInput(cLeft) || cLeft == ')' || cLeft == '*' || cLeft == '+' || cLeft == '?') {
                 if(!functionalInput(cRight) || cRight == '(') {
                     char ch = '¤';
-                    evalRegex += ch;
+                    evalRegex2 += ch;
                 } 
             }
         }
-        evalRegex += regex.charAt(regex.length()-1);
-        System.out.println(evalRegex);//Testing line!
-        return evalRegex;
+        evalRegex2 += evalRegex1.charAt(evalRegex1.length()-1);
+        return evalRegex2;
     }
     
-        public boolean functionalInput(char c) {
+    public boolean functionalInput(char c) {
         if(c == '¤' || c == '|' || c == '*' || c== '+' || c == '?' || c == '(' || c == ')')  return true;
         return false;
     }
+        
+//    public int unionGroupLength(int index) {
+//            int iterations = 0;
+//            while(regex.charAt(index++) != ']') iterations++;
+//            return iterations+1;
+//    }
+//    
+//    public String unionGroupEvalString(int index, int evalEndIndex) {
+//        String groupEvalString = "";
+//        if(index < evalEndIndex) {
+//            char last = regex.charAt(index);
+//            groupEvalString += "(" + last;
+//            if(index+1 < evalEndIndex) groupEvalString += "|";
+//            char next = '¤';
+//            for (int i = index+1; i < evalEndIndex; i++) {
+//                char c = regex.charAt(i);
+//                if(i-1 >= index) last = regex.charAt(i-1);
+//               else last = '¤';
+//                if(i+1 < evalEndIndex) last = regex.charAt(i+1);
+//              else next = '¤';
+//               if(c == '-' && last != '¤' && next != '¤') {
+//                   groupEvalString += findOrderString(last, next);
+//              } else groupEvalString += '|' + c;
+//            }
+//            groupEvalString += ")";
+//        }
+//        return groupEvalString;
+//    }
+//    
+//    public String findOrderString(char a, char z) {
+//        String orderedString = stringFromAtoZ(a, z, alphabet, alphabetEval);
+//        if(!orderedString.equals("")) return orderedString;
+//        orderedString = stringFromAtoZ(a, z, numbers, numbersEval);
+//        if(!orderedString.equals("")) return orderedString;
+//        orderedString = stringFromAtoZ(a, z, capsAlphabet, capsAlphabetEval);
+//        if(!orderedString.equals("")) return orderedString;
+//        return "-";
+//    }
+//    
+//    public String stringFromAtoZ(char a, char z, String orderlyString, String evalString) {
+//        char[] letters = orderlyString.toCharArray();
+//        String returnString = "";
+//        int startIndex = 0;
+//        int endIndex = 0;
+//        boolean startFound = false;
+//        for (int i = 0; i < letters.length; i++) {
+//            if(letters[i] == a)  {
+//                startFound = true;
+//                startIndex = i+1;
+//            }
+//            if(letters[i] == z) {
+//                endIndex = i;
+//                if(startFound) break;
+//            }
+//        }
+//        if(startFound && startIndex < endIndex) returnString = evalString.substring(startIndex*2, endIndex*2-1);
+//        return returnString;
+//    }
     
     public boolean evaluate() {
         if(!functionStack.empty()) {
             char functionChar = functionStack.pollLast();
-//            switch(functionChar) {
-//                case '¤': return concat();
-//                case '|': return union();
-//                case '*': return star();
-//                case '+': return plus();
-//                case '?': return question();
-//            }
-            switch(functionChar) {  //Test version
-                case '¤': if(concat()) {
-                    return true;
-                } else {
-                    System.out.println("ConcatFailed!");
-                    return false;
-                }
-                case '|': if(union()) {
-                    return true;
-                } else {
-                    System.out.println("UnionFailed!");
-                    return false;
-                }
-                case '*': if(star()) {
-                    return true;
-                } else {
-                    System.out.println("StarFailed!");
-                    return false;
-                }
-                case '+': if(plus()) {
-                    return true;
-                } else {
-                    System.out.println("PlusFailed!");
-                    return false;
-                }
-                case '?': if(question()) {
-                    return true;
-                } else {
-                    System.out.println("QuestionFailed!");
-                    return false;
-                }
+            switch(functionChar) {
+                case '¤': return concat();
+                case '|': return union();
+                case '*': return reducedStar();
+                case '+': return reducedPlus();
+                case '?': return reducedQuestion();
             }
-        } else System.out.println("Stack empty!"); //Test line
-        System.out.println("Eval fail!"); //testLine
+        }
         return false;
     }
     
@@ -160,8 +212,6 @@ public class NFABuilder {
         
         return true;
     }
-    
-    
     
     /**
      * Asettaa operaatio pinoon automaatin tiloista koostuvan jonon, joka 
@@ -283,6 +333,55 @@ public class NFABuilder {
         
         allNFAStates.add(startState);
         allNFAStates.add(endState);
+        
+        operationStack.addLast(A);
+        
+        return true;
+    }
+    
+    /**
+     * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
+     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
+    public boolean reducedStar() {
+        LinkedDeque<State> A;
+        if(operationStack.empty()) return false;
+        A = operationStack.pollLast();
+        
+        State endState = new State(interpreter.nextState++);
+        
+        A.getFirstElement().addTransition('0', endState);
+        A.getLastElement().addTransition('0', A.getFirstElement());
+        A.getLastElement().addTransition('0', endState);
+        
+        A.addLast(endState);
+        
+        allNFAStates.add(endState);
+        
+        operationStack.addLast(A);
+        
+        return true;
+    }
+    
+    public boolean reducedPlus() {
+        LinkedDeque<State> A;
+        if(operationStack.empty()) return false;
+        A = operationStack.pollLast();
+        
+        A.getLastElement().addTransition('0', A.getFirstElement());
+        
+        operationStack.addLast(A);
+        
+        return true;
+    }
+    
+    public boolean reducedQuestion() {
+        LinkedDeque<State> A;
+        if(operationStack.empty()) return false;
+        A = operationStack.pollLast();
+        
+        A.getFirstElement().addTransition('0', A.getLastElement());
         
         operationStack.addLast(A);
         

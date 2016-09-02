@@ -100,7 +100,7 @@ public class InterpreterTest {
     }
     
     @Test
-    public void testTraversalRegEx2_matchTest1() {
+    public void testRegEx2_matchTest1() {
         defRegEx2();
         boolean fails = false;
         Set<String> matches = interpreter.findMatchingStrings("ddaxadncdfddaxabdneeeeneeeeccdffffdd");
@@ -124,6 +124,19 @@ public class InterpreterTest {
         assertEquals(true, !fails);
     }
     
+    public void defRegEx4(){
+        interpreter.constructRegEx("ac?r(xn|di)+");
+    }
     
+    @Test
+    public void testRegEx4_matchTest1() {
+        defRegEx4();
+        boolean fails = false;
+        Set<String> matches = interpreter.findMatchingStrings("ddarxneeacrdixndix");
+        if(!matches.contains("arxn")) fails = true;
+        if(!matches.contains("acrdixndi")) fails = true;
+        if(matches.size() != 2) fails = true;
+        assertEquals(true, !fails);
+    }
     
 }

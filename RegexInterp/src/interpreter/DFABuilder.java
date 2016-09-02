@@ -17,7 +17,6 @@ public class DFABuilder {
         this.interpreter = interpreter;
         this.operationStack = interpreter.operationStack;
         
-        //allDFAStates = new HashSet<>();
         allDFAStates = new CustomSet<>();
         }
     
@@ -29,7 +28,6 @@ public class DFABuilder {
     public boolean NFAtoDFA() {
         LinkedDeque<State> NFADeque = operationStack.pollLast();
         LinkedDeque<State> DFADeque = new LinkedDeque<>();
-        //Set<State> startingStates = new HashSet<>();
         Set<State> startingStates = new CustomSet<>();
         startingStates.add(NFADeque.pollFirst());
         State DFAStartState = new State(interpreter.nextState++, epsilonClosure(startingStates));
@@ -76,7 +74,6 @@ public class DFABuilder {
     }
     
     public Set<State> epsilonClosure(Set<State> states) {
-        //Set<State> epsilonTransitStates = new HashSet<>();
         Set<State> epsilonTransitStates = new CustomSet<>();
         Iterator<State> iterator = states.iterator();
         while(iterator.hasNext()) {
@@ -88,7 +85,6 @@ public class DFABuilder {
     }
     
     public Set<State> reachStates(State state, char input) {
-        //Set<State> transitStates = new HashSet<>();
         Set<State> transitStates = new CustomSet<>();
         Set<State> inputResults = state.getTransitions(input);
         if(inputResults != null && !inputResults.isEmpty()) {
@@ -103,7 +99,6 @@ public class DFABuilder {
     }
     
     public Set<State> move(char input, Set<State> states) {
-        //Set<State> transitStates =  new HashSet<>();
         Set<State> transitStates =  new CustomSet<>();
         Iterator<State> iterator1 = states.iterator();
         while(iterator1.hasNext()) {

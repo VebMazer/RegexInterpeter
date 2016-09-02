@@ -54,8 +54,6 @@ public class Interpreter {
      */
     public boolean traverseString(int i, int length, State state) {
         if(i >= length) return true;
-//        if(state.acceptingState) return true;
-//        else if(i >= length) return false;
         Set<State> states = state.getTransitions(string.charAt(i));
         if(states != null && !states.isEmpty()) {
             Iterator<State> iterator = states.iterator();
@@ -85,11 +83,13 @@ public class Interpreter {
                 Set<State> states = state.getTransitions(c);
                 if(states != null && states.size() > 0) {
                     //DFA States only ever have one following state for an input character.
-                    return buildMatch(index+1, consStr+c, inputString, states.iterator().next());
-                } else {
+                    String build = buildMatch(index+1, consStr+c, inputString, states.iterator().next());
+                    if(!build.equals("")) return build;
                     if(state.acceptingState) return consStr;
                     return "";
                 }
+                if(state.acceptingState) return consStr;
+                return "";
             }
             if(state.acceptingState) return consStr;
             return "";
