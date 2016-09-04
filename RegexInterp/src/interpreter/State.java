@@ -42,7 +42,7 @@ public class State {
     
     /**
      * Konstruktori, kun tunnistenumero ja joukko tiloja, joista tämä tila 
-     * rakentuu on tarjottu.
+     * rakentuu on tarjottu(DFA tila).
      * @param ID
      * @param NFAStates 
      */
@@ -135,7 +135,6 @@ public class State {
      * @return Joukko tiloja, jotka johtavat tilanmuutokseen jossakin tämän tilan sisältämässä tilassa.
      */
     public Set<Character> getAllTransitInputs() {
-        //Set<Character> inputs = new HashSet<Character>();
         Set<Character> inputs = new CustomSet<>();
         if(!consStates.isEmpty()) {
             Iterator<State> iterator1 = consStates.iterator();

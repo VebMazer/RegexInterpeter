@@ -126,6 +126,15 @@ public class LinkedDeque<E> implements Iterable<E>{
         return size == 0;
     }
     
+    
+    public boolean contains(Object o) {
+        Iterator<E> iterator = this.iterator();
+        while(iterator.hasNext()) {
+            if(iterator.next().equals(o)) return true;
+        }
+        return false;
+    }
+    
     /**
      * Iteraattorin palauttava metodi.
      * @return Iteraattori

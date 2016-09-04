@@ -64,13 +64,13 @@ public class Interpreter {
         return false;
     }
     
-    public Set<String> findMatchingStrings(String inputString) {
-        Set<String> matches = new CustomSet<>();
+    public LinkedDeque<String> findMatchingStrings(String inputString) {
+        LinkedDeque<String> matches = new LinkedDeque<>();
         int index = 0;
         while(index < inputString.length()) {
             String str = buildMatch(index, "", inputString, regexDFADeque.getFirstElement());
             if(!str.equals("")) {
-                matches.add(str);
+                matches.addLast(str);
                 index += str.length();
             } else index++;
         }

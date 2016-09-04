@@ -3,7 +3,6 @@ package interpreter;
 
 import dataStructures.CustomSet;
 import dataStructures.LinkedDeque;
-//import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -139,6 +138,9 @@ public class DFABuilder {
         return DFADeque;
     }
     
+    /**
+     * Tulostaa tietoa kaikista DFA:n tiloista.
+     */
     public void printAllDFAStates() {
         Iterator<State> iterator = allDFAStates.iterator();
         while(iterator.hasNext()) {

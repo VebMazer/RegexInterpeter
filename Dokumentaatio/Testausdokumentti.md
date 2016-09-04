@@ -6,7 +6,7 @@ Tulkin toiminnan testaus:
 avustaa ohjelman toiminnan tarkkailua.
 - Erillaisten syötteiden kokeilu.
 - Debuggaus viestien avulla ohjelman käyttäytyessä odottamattomasti.
-- Tulkki rakentaa nyt tietorakenteet oikein.
+- Tulkki oikean toiminnan testaus JUnit testeillä.
 
 LinkedDeque luokan toiminnallisuuden testaus:
 - Luokan oikean toiminnan testaus JUnit testeillä.

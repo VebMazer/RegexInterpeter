@@ -1,6 +1,7 @@
 
 package tests;
 
+import dataStructures.LinkedDeque;
 import interpreter.Interpreter;
 import java.util.Set;
 import org.junit.After;
@@ -103,7 +104,7 @@ public class InterpreterTest {
     public void testRegEx2_matchTest1() {
         defRegEx2();
         boolean fails = false;
-        Set<String> matches = interpreter.findMatchingStrings("ddaxadncdfddaxabdneeeeneeeeccdffffdd");
+        LinkedDeque<String> matches = interpreter.findMatchingStrings("ddaxadncdfddaxabdneeeeneeeeccdffffdd");
         if(!matches.contains("axadncdf")) fails = true;
         if(!matches.contains("axabdneeeeneeeeccdffff")) fails = true;
         if(matches.size() != 2) fails = true;
@@ -132,11 +133,26 @@ public class InterpreterTest {
     public void testRegEx4_matchTest1() {
         defRegEx4();
         boolean fails = false;
-        Set<String> matches = interpreter.findMatchingStrings("ddarxneeacrdixndix");
+        LinkedDeque<String> matches = interpreter.findMatchingStrings("ddarxneeacrdixndix");
         if(!matches.contains("arxn")) fails = true;
         if(!matches.contains("acrdixndi")) fails = true;
         if(matches.size() != 2) fails = true;
         assertEquals(true, !fails);
     }
     
+    public void defRegEx5() {
+        interpreter.constructRegEx("ax?(f\\+ne*)|df*sn");
+    }
+    
+    @Test
+    public void testRegEx5_matchTest1() {
+        defRegEx5();
+        boolean fails = false;
+        LinkedDeque<String> matches = interpreter.findMatchingStrings("ddaf+naadfffsneeaxf+neee");
+        if(!matches.contains("af+n")) fails = true;
+        if(!matches.contains("dfffsn")) fails = true;
+        if(!matches.contains("axf+neee")) fails = true;
+        if(matches.size() != 3) fails = true;
+        assertEquals(true, !fails);
+    }
 }

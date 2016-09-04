@@ -21,7 +21,7 @@ public class NFABuilder {
 //    public final String numbers = "0123456789";
 //    public final String numbersEval = "0|1|2|3|4|5|6|7|8|9";
     
-    //Monitoring Group
+
     public Set<State> allNFAStates;
     
         public NFABuilder(Interpreter interpreter) {
@@ -44,7 +44,6 @@ public class NFABuilder {
         boolean wasBackSlash = false;
         for (int i = 0; i < evalRegEx.length(); i++) {
             char c = evalRegEx.charAt(i);
-            //-----------------untested section below---------------
             if(c == '\\' && !wasBackSlash) wasBackSlash = true;
             else if(wasBackSlash) {
                 if(c != '¤') {
@@ -52,9 +51,10 @@ public class NFABuilder {
                     wasBackSlash = false;
                 }
             }
+            //-----------------untested section below-------------------
             //else if(c == '[') i += evalUnionGroup(i);
             //else if(c == '.') ;
-            //-------------------untested model above-----------------
+            //-------------------untested section above-----------------
             else if(!functionalInput(c)) push(c); 
             else if(functionStack.empty()) functionStack.addLast(c);
             else if(c == '(') functionStack.addLast(c);
@@ -120,6 +120,11 @@ public class NFABuilder {
         return evalRegex2;
     }
     
+    /**
+     * Tarkistaa onko syöte merkki, johonkin toimintoon johtava symboli, vai ei.
+     * @param c Syöte merkki.
+     * @return true jos merkki johtaa johonkin funktioon.
+     */
     public boolean functionalInput(char c) {
         if(c == '¤' || c == '|' || c == '*' || c== '+' || c == '?' || c == '(' || c == ')')  return true;
         return false;
@@ -264,80 +269,80 @@ public class NFABuilder {
         return false;
     }
     
-    /**
-     * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
-     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
-     * @return Totuusarvo sen mukaan toteutuiko operaatio.
-     */
-    public boolean star() {
-        LinkedDeque<State> A;
-        if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
-        
-        State startState = new State(interpreter.nextState++);
-        State endState = new State(interpreter.nextState++);
-        
-        startState.addTransition('0', endState);
-        startState.addTransition('0', A.getFirstElement());
-        A.getLastElement().addTransition('0', endState);
-        A.getLastElement().addTransition('0', A.getFirstElement());
-        
-        A.addLast(endState);
-        A.addFirst(startState);
-        
-        allNFAStates.add(startState);
-        allNFAStates.add(endState);
-        
-        operationStack.addLast(A);
-        
-        return true;
-    }
-    
-    public boolean plus() {
-        LinkedDeque<State> A;
-        if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
-        
-        State startState = new State(interpreter.nextState++);
-        State endState = new State(interpreter.nextState++);
-        
-        startState.addTransition('0', A.getFirstElement());
-        A.getLastElement().addTransition('0', endState);
-        A.getLastElement().addTransition('0', A.getFirstElement());
-        
-        A.addLast(endState);
-        A.addFirst(startState);
-        
-        allNFAStates.add(startState);
-        allNFAStates.add(endState);
-        
-        operationStack.addLast(A);
-        
-        return true;
-    }
-    
-    public boolean question() {
-        LinkedDeque<State> A;
-        if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
-        
-        State startState = new State(interpreter.nextState++);
-        State endState = new State(interpreter.nextState++);
-        
-        startState.addTransition('0', endState);
-        startState.addTransition('0', A.getFirstElement());
-        A.getLastElement().addTransition('0', endState);
-        
-        A.addLast(endState);
-        A.addFirst(startState);
-        
-        allNFAStates.add(startState);
-        allNFAStates.add(endState);
-        
-        operationStack.addLast(A);
-        
-        return true;
-    }
+//    /**
+//     * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
+//     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
+//     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+//     */
+//    public boolean originalStar() {
+//        LinkedDeque<State> A;
+//        if(operationStack.empty()) return false;
+//        A = operationStack.pollLast();
+//        
+//        State startState = new State(interpreter.nextState++);
+//        State endState = new State(interpreter.nextState++);
+//        
+//        startState.addTransition('0', endState);
+//        startState.addTransition('0', A.getFirstElement());
+//        A.getLastElement().addTransition('0', endState);
+//        A.getLastElement().addTransition('0', A.getFirstElement());
+//        
+//        A.addLast(endState);
+//        A.addFirst(startState);
+//        
+//        allNFAStates.add(startState);
+//        allNFAStates.add(endState);
+//        
+//        operationStack.addLast(A);
+//        
+//        return true;
+//    }
+//    
+//    public boolean originalPlus() {
+//        LinkedDeque<State> A;
+//        if(operationStack.empty()) return false;
+//        A = operationStack.pollLast();
+//        
+//        State startState = new State(interpreter.nextState++);
+//        State endState = new State(interpreter.nextState++);
+//        
+//        startState.addTransition('0', A.getFirstElement());
+//        A.getLastElement().addTransition('0', endState);
+//        A.getLastElement().addTransition('0', A.getFirstElement());
+//        
+//        A.addLast(endState);
+//        A.addFirst(startState);
+//        
+//        allNFAStates.add(startState);
+//        allNFAStates.add(endState);
+//        
+//        operationStack.addLast(A);
+//        
+//        return true;
+//    }
+//    
+//    public boolean originalQuestion() {
+//        LinkedDeque<State> A;
+//        if(operationStack.empty()) return false;
+//        A = operationStack.pollLast();
+//        
+//        State startState = new State(interpreter.nextState++);
+//        State endState = new State(interpreter.nextState++);
+//        
+//        startState.addTransition('0', endState);
+//        startState.addTransition('0', A.getFirstElement());
+//        A.getLastElement().addTransition('0', endState);
+//        
+//        A.addLast(endState);
+//        A.addFirst(startState);
+//        
+//        allNFAStates.add(startState);
+//        allNFAStates.add(endState);
+//        
+//        operationStack.addLast(A);
+//        
+//        return true;
+//    }
     
     /**
      * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
@@ -364,6 +369,11 @@ public class NFABuilder {
         return true;
     }
     
+    /**
+     * Muodostaa plus(+) operaatiota kuvaavat tilat viimeisestä
+     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
     public boolean reducedPlus() {
         LinkedDeque<State> A;
         if(operationStack.empty()) return false;
@@ -376,6 +386,11 @@ public class NFABuilder {
         return true;
     }
     
+    /**
+     * Muodostaa question(?) operaatiota kuvaavat tilat viimeisestä
+     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
+     * @return Totuusarvo sen mukaan toteutuiko operaatio.
+     */
     public boolean reducedQuestion() {
         LinkedDeque<State> A;
         if(operationStack.empty()) return false;
@@ -422,6 +437,9 @@ public class NFABuilder {
         return false;
     }
     
+    /**
+     * Tulostaa listan tiloista NFA:ssa.
+     */
     public void printAllStates() {
         Iterator<State> iterator = allNFAStates.iterator();
         while(iterator.hasNext()) {
