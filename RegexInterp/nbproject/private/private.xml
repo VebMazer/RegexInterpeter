@@ -3,17 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/ui/UI.java</file>
             <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/test/tests/InterpreterTest.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/interpreter/State.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/dataStructures/LinkedDeque.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/interpreter/NFABuilder.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/interpreter/DFABuilder.java</file>
             <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/test/tests/DataStructuresTest.java</file>
             <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/test/tests/UITest.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/interpreter/Interpreter.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/dataStructures/CustomMap.java</file>
-            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/dataStructures/CustomSet.java</file>
+            <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/main/PerformanceTester.java</file>
             <file>file:/home/xenron/NetBeansProjects/GitHub/RegexInterp/RegexInterp/src/main/Main.java</file>
         </group>
     </open-files>

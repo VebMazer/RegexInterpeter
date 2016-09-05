@@ -29,7 +29,7 @@ public class UI {
     }
     
     /**
-     * Metodi joka sisältää käyttöliittymän taustaloopin ja käynnistää
+     * Metodi joka sisältää käyttöliittymän taustaloopit ja käynnistää
      * käyttöliittymän.
      */
     public void run() {
@@ -59,12 +59,18 @@ public class UI {
         }
     }
     
+    /**
+     * Tulostetaa ohjelman intron sen käynnistyessä.
+     */
     public void printIntro() {
         System.out.println("Welcome to VebMazers regular expression interpreter. ");
         System.out.println("Currently only has functions for concatenation and operators: '|', '*', '+', '?'");
         System.out.println("Also understands how to use parenthesis: '(' ')' and backslash '\\'");
     }
     
+    /**
+     * Tulostaa aloitus loopin toiminto listan.
+     */
     public void printStartingCommandsList() {
         System.out.println("");
         System.out.println("Options:");
@@ -73,6 +79,9 @@ public class UI {
         System.out.println("");
     }
     
+    /**
+     * Tulostaa listan käyttöliittymän pääloopin toiminnoista.
+     */
     public void printCommandsList() {
         System.out.println("");
         System.out.println("Currently defined RegEx is: " + interp.regex);
@@ -85,6 +94,9 @@ public class UI {
         System.out.println("");
     }
     
+    /**
+     * Tulostaa listan debuggaus loopin toiminnoista.
+     */
     public void printDebuggingTools() {
         System.out.println("");
         System.out.println("Currently defined RegEx is: " + interp.regex);
@@ -99,6 +111,9 @@ public class UI {
         System.out.println("");
     }
     
+    /**
+     * Pyytää käyttäjää syöttämään toiminto numeron.
+     */
     public void askForCommand() {
         System.out.print("Enter an option number: ");
         input = scanner.next();
@@ -131,10 +146,19 @@ public class UI {
         System.out.println(result);
     }
     
+    /**
+     * Tulostaa NFA:n muodostuksessa hyödynnettävän concatenaatiot
+     * symboleina sisältävän version alkuperäisestä RegEx lausekkeesta.
+     */
     public void printEvalRegex() {
         System.out.println(interp.nfaBuilder.evalRegEx);
     }
     
+    /**
+     * Pyytää käyttäjältä syötteen, josta kerätään RegEx lausekkeen
+     * mukaiset merkkijonot ja tulostetaan ne sitten käyttäjälle
+     * niiden kokonais lukumäärän kanssa.
+     */
     public void printMatchingStrings() {
         System.out.print("Enter a string: ");
         String input = scanner.next();

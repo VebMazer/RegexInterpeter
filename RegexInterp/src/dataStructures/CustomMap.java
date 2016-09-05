@@ -8,7 +8,14 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Objects;
 
-
+/**
+ * Avain-arvo parien käyttöä tukeva tietorakenne, joka on rakennettu
+ * CustomSet olion varaan, jonka alkioita vertaillaan avain-arvo alkioiden
+ * avaimia vertailemalla.
+ * @author xenron
+ * @param <K> Avain-arvo parin avain tyyppi.
+ * @param <V> Avain-arvo parin arvo tyyppi.
+ */
 public class CustomMap<K, V> implements Map {
     
     private class Pair {

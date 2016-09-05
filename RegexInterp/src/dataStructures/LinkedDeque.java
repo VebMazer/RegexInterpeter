@@ -126,7 +126,11 @@ public class LinkedDeque<E> implements Iterable<E>{
         return size == 0;
     }
     
-    
+    /**
+     * Testaa sisältääkö jono olion o.
+     * @param o olio, jonka läsnäoloa tässä jonossa testataan.
+     * @return true jos o löytyy tästä jonosta.
+     */
     public boolean contains(Object o) {
         Iterator<E> iterator = this.iterator();
         while(iterator.hasNext()) {

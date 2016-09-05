@@ -5,29 +5,46 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-
+/**
+ * Joukkona toimiva tietorakenne, joka toeteutetaan taulukon avulla.
+ * @param <E> Kuvaa joukon sisältämää luokkaa.
+ */
 public class CustomSet<E> implements Set<E>, Iterable<E> {
     private E[] array;
     private int size;
     private int nextIndex;
     
+    /**
+     * Pääkonstruktori.
+     */
     public CustomSet() {
         array = (E[]) new Object[8];
         size = 0;
         nextIndex = 0;
     }
     
+    /**
+     * Palauttaa muuttujassa ylläpidettävän koon. Aikavaativuus O(1).
+     * @return Joukon koko.
+     */
     @Override
     public int size() {
         return size;
     }
-
+    
     @Override
     public boolean isEmpty() {
         if(size == 0) return true;
         return false;
     }
     
+    /**
+     * Lisää E tyypin olion joukkoon, jos vastaavaa oliota ei vielä löydy
+     * tästä joukosta.
+     * @param e Lisättävä olio.
+     * @return true, jos olio lisätään joukkoon ja false, jos vastaava olio 
+     * on jo siellä.
+     */
     @Override
     public boolean add(E e) {
         for (int i = 0; i < array.length; i++) {
@@ -40,7 +57,11 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         return true;
     }
     
-    
+    /**
+     * Yrittää lisätä kaikki kokoelman oliot tähän joukkoon.
+     * @param c Kokoelma, jonka alkiot yritetään lisätä.
+     * @return true, jos jokin olio lisättiin onnistuneesti tähän joukkoon.
+     */
     @Override
     public boolean addAll(Collection<? extends E> c) {
         Iterator<? extends E> iterator = c.iterator();
@@ -51,6 +72,12 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         return changed;
     }
     
+    /**
+     * Luo uuden taulukon, joka sisältää tämän joukon sisältämät arvot
+     * ja asettaa sen kooksi muuttujan newSize arvon.
+     * @param newSize Uuden taulukon koko.
+     * @return Luotu taulukko.
+     */
     public E[] reSizeArray(int newSize) {
         E[] newArray = (E[]) new Object[newSize];
         nextIndex = 0;
@@ -148,7 +175,10 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         }
         return changed;
     }
-
+    
+    /**
+     * Tyhjentää joukon olioista ja alustaa taulukon array uusiksi.
+     */
     @Override
     public void clear() {
         array = (E[]) new Object[8];
@@ -182,6 +212,9 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
             return array[current];
         }
         
+        /**
+         * Etsii seuraavan indeksin, joka ei ole tyhjä.
+         */
         public void findNext() {
             next++;
             for (int i = next; i < nextIndex; i++) {

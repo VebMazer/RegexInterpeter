@@ -13,6 +13,8 @@ public class Main {
      * @param args Taulukko, joka koostuu ohjelman vastaanottamista parametreista.
      */
     public static void main(String[] args) {
+//        PerformanceTester tester = new PerformanceTester();
+//        tester.test();
         UI ui = new UI();
         ui.run();
     }

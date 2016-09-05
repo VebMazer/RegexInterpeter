@@ -64,6 +64,14 @@ public class Interpreter {
         return false;
     }
     
+    /**
+     * Etsii RegEx määrittelyn mukaiset merkkijonot inputString muuttujasta
+     * ja palauttaa jonon, josta löydetyt merkkijonot sijaitsevat. Ei  kuitenkaan
+     * kerää päällekkäisiä merkkijonoja, koska etenee sopivan merkkijonon löytyessä
+     * aina löydetyn merkkijonon viimeistä merkkiä seuraavaan merkkiin.
+     * @param inputString
+     * @return 
+     */
     public LinkedDeque<String> findMatchingStrings(String inputString) {
         LinkedDeque<String> matches = new LinkedDeque<>();
         int index = 0;
@@ -77,6 +85,18 @@ public class Interpreter {
         return matches;
     }
     
+    /**
+     * Etsii RegEx määrittelyn mukaisen merkkijonon muuttujasta inputString sille
+     * alussa annetusta indexistä edeten. Jos syöte merkkijono ei kuitenkaan etene
+     * missään vaiheessa hyväksyvään tilaan palautetaan tyhjä merkkijono.
+     * @param index Indeksi inputStringissä jossa ollaan kyseisellä rekursion hetkellä.
+     * @param consStr Merkkijono johon rakennetaan mahdollisesti palautettava merkkijono.
+     * @param inputString Syöte merkkijono, josta RegEx lausekkeen mukaisia merkkijonoja
+     * etsitään.
+     * @param state Tila johon rekursio on edennyt DFA:ssa.
+     * @return Löydetty merkkijono, tai tyhjä merkkijono, jos sopivaa merkkijonoa ei saada
+     * aikaan.
+     */
     public String buildMatch(int index, String consStr, String inputString, State state) {
             if(index < inputString.length()) {
                 char c = inputString.charAt(index);

@@ -6,6 +6,10 @@ import dataStructures.LinkedDeque;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Luokka, joka rakentaa Epädeterministisen äärellisen automaatin(NFA) 
+ * RegEx lausekkeesta.
+ */
 public class NFABuilder {
     
     public Interpreter interpreter;
@@ -188,6 +192,10 @@ public class NFABuilder {
 //        return returnString;
 //    }
     
+    /**
+     * Kutsuu tilojen käsittely operaatioita sen mukaan, mikä merkki on pinossa.
+     * @return true operaation onnistuessa.
+     */
     public boolean evaluate() {
         if(!functionStack.empty()) {
             char functionChar = functionStack.pollLast();
@@ -202,7 +210,12 @@ public class NFABuilder {
         return false;
     }
     
-    
+    /**
+     * Avustaa RegEx symbolien evaluoimisessa oikeaan aikaan.
+     * @param left Merkki vasemmalla.
+     * @param right Merkki oikealla.
+     * @return Yleensä true jos RegEx symboli on oikealla.
+     */
     public boolean priority(char left, char right) {
         if(left == right) return true;
         else if(left == '*') return false;

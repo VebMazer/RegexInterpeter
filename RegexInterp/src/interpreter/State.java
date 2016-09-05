@@ -20,7 +20,7 @@ public class State {
     public boolean acceptingState;
     
     /**
-     * Oletus konstruktori.
+     * Oletus konstruktori. Aikalailla tarpeeton.
      */
     public State() {
         stateID = -1;
@@ -30,7 +30,8 @@ public class State {
     }
     
     /**
-     * Konstruktori, kun tunnistenumero on tarjottu.
+     * Konstruktori, kun tunnistenumero on tarjottu. Tätä konstruktoria
+     * käytetään yleensä NFA tilojen muodostamiseen.
      * @param ID Tilan tunnistenumero.
      */
     public State(int ID) {

@@ -6,6 +6,11 @@ import dataStructures.LinkedDeque;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Luokka, joka rakentaa deterministisen äärellisen automaatin(DFA) 
+ * epädeterministisestä äärellisestä automaatista(NFA).
+ * Luokan tehtäviin, kuuluu myös optimoida valmista DFA:ta.
+ */
 public class DFABuilder {
     public Interpreter interpreter;
     public LinkedDeque<LinkedDeque<State>> operationStack;
@@ -60,6 +65,18 @@ public class DFABuilder {
         return DFADeque;
     }
     
+    /**
+     * Tarkistaa vastaako joukko NFA tiloja jotain jo aiemmin luotua DFA tilaa
+     * ja lisää tilalle currentState tilanmuutoksen tähän tilaan jos sellainen
+     * löytyy.
+     * @param currentState Tämän hetkinen tila, jolle tilanmuutos lisätään, jos
+     * NFA tilojen joukon todetaan vastaavan jo olemassa olevaa DFA tilaa.
+     * @param c Syöte merkki, jolla muunnos toiseen DFA tilaan tapahtuu, jos 
+     * sen todetaan olevan jo olemassa.
+     * @param NFAStates Joukko NFA tiloja, jotka vastaavat, joko jotain uutta
+     * DFA tilaa, tai jo olemassa olevaa DFA tilaa.
+     * @return true, jos NFAStates vastaa jo olemassa olevaa DFA tilaa, muuten false.
+     */
     public boolean connectsBack(State currentState, char c ,Set<State> NFAStates) {
         Iterator<State> dfaStatesIterator = allDFAStates.iterator();
         while(dfaStatesIterator.hasNext()) {
@@ -72,6 +89,15 @@ public class DFABuilder {
         return false;
     }
     
+    /**
+     * Epsilon sulkeuma kerää joukoksi ne tilat, jotka voidaan saavuttaa
+     * jostain joukon states tilasta epsilon muunnoksella(Ilman mitään syötettä).
+     * Tämä sulkeuma vastaa aina jotain DFA tilaa.
+     * @param states NFA tilat, joista epsilon muunnoksia etsitään.
+     * @return Joukko tiloja, joka koostuu states muuttujan tiloista ja niistä
+     * tiloista, jotka voidaan saavuttaa states muuttujan tiloista epsilon muunnoksilla.
+     * 
+     */
     public Set<State> epsilonClosure(Set<State> states) {
         Set<State> epsilonTransitStates = new CustomSet<>();
         Iterator<State> iterator = states.iterator();
@@ -83,6 +109,15 @@ public class DFABuilder {
         return epsilonTransitStates;
     }
     
+    /**
+     * Rekursiivinen metodi, joka kerää joukon tiloja, jotka voidaan
+     * saavuttaa edeten alku tilasta input merkkiä seuraavilla muunnoksilla.
+     * Käytetään epsilon sulkeuman kanssa syötteellä '0', joka symboloi epsilon
+     * sulkeumaa.
+     * @param state Tila, jota käsitellään tällä hetkellä rekursiossa.
+     * @param input Syöte merkki, jonka johtamat tilat kerätään joukkoon.
+     * @return Joukko tiloja, jotka on saavutettu merkillä input.
+     */
     public Set<State> reachStates(State state, char input) {
         Set<State> transitStates = new CustomSet<>();
         Set<State> inputResults = state.getTransitions(input);
@@ -97,6 +132,14 @@ public class DFABuilder {
         return transitStates;
     }
     
+    /**
+     * Kerää joukon tiloja, joihin voi edetä joukon states tiloista syöttellä
+     * input.
+     * @param input Syöte, jota seuraavat tilat kerätään joukkoon.
+     * @param states Tilat, input merkkiä seuraavia tiloja etsitään.
+     * @return Joukko tiloja, jotka voitiin saavuttaa joukon states tiloista
+     * merkillä input.
+     */
     public Set<State> move(char input, Set<State> states) {
         Set<State> transitStates =  new CustomSet<>();
         Iterator<State> iterator1 = states.iterator();
