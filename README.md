@@ -14,7 +14,7 @@ Dokumentaatio:
 
 [Käyttöohjeet](Dokumentaatio/Käyttöohje.md)
 
-[Javadoc](https://htmlpreview.github.io/?https://github.com/VebMazer/RegexInterp/blob/master/Dokumentointi/javadoc/index.html)
+[Javadoc](https://htmlpreview.github.io/?https://github.com/VebMazer/RegexInterp/blob/master/Dokumentaatio/javadoc/index.html)
 
 [Viikkoraportti1](Dokumentaatio/Viikkoraportti1.md)
 
