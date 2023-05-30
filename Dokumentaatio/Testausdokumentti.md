@@ -1,6 +1,6 @@
-#Testausdokumentti
+# Testausdokumentti
 
-##Oikean toiminnan testaus
+## Oikean toiminnan testaus
 
 Tulkin toiminnan testaus:
 - Regex automaatin tilojen kartoitukseen tarkoitettu metodi käyttöliittymän yhteydessä.

@@ -60,12 +60,12 @@ public class UI {
     }
     
     /**
-     * Tulostetaa ohjelman intron sen käynnistyessä.
+     * Tulostetaan ohjelman intron sen käynnistyessä.
      */
     public void printIntro() {
-        System.out.println("Welcome to VebMazers regular expression interpreter. ");
-        System.out.println("Currently only has functions for concatenation and operators: '|', '*', '+', '?'");
-        System.out.println("Also understands how to use parenthesis: '(' ')' and backslash '\\'");
+        System.out.println("Welcome to the regular expression interpreter program.");
+        System.out.println("* Supported operators are: '|', '*', '+', '?'.");
+        System.out.println("* Also supports the use of parenthesis: '(' ')' and backslash '\\'");
     }
     
     /**

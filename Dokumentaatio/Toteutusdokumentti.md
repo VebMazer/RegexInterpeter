@@ -1,4 +1,4 @@
-#Toetutusdokumentti
+# Toetutusdokumentti
 
 - Ohjelma koostuu säännöllisten lausekkeiden tulkista ja tämän käyttöön
 tarkoitetusta yksinkertaisesta tekstikäyttöliittymästä.
@@ -7,11 +7,11 @@ merkkijonosta tietorakenteeksi.
 - Muodostetun tietorakenteen avulla, voi sitten etsiä määritellyn kaltaisia merkkijonoja
 merkkijoista.
 
-##Tulkin kykyjen laajuus:
+## Tulkin kykyjen laajuus:
 - Toteutus hallitsee nykyisellään RegEx operaatiot: *, +, ?, |, \
 - Myös sulkujen ( ) käyttö toimii oikein.
 
-##Tietorakenteen muodostaminen RegEx lausekkeesta:
+## Tietorakenteen muodostaminen RegEx lausekkeesta:
 
 1. RegEx lausekkeen pohjalta rakennetaan epädeterministinen äärellinen 
 automaatti(NFA) kuvaamaan sitä.
@@ -23,7 +23,7 @@ Molemmat automaatti tyypit rakentuvat tiloista, joita kuvaa State class. State t
 oliot voivat sisältää tyyppi muutoksia muuttujassa transitions, joissa tietty syöte merkki 
 kuvautuu sitä seuraavaan tilaan.
 
-##Tietorakenteen käyttö
+## Tietorakenteen käyttö
 
 Tulkki ottaa vastaan merkkijonon, jonka se käy läpi merkki kerrallaan, keräten
 säännöllistä lauseketta vastaavat merkkijonot sen sisältä. Se ei kerää alkuperäisessä 
@@ -31,7 +31,7 @@ merkkijonossa päällekkäin olevia merkkijonoja, vaan etenee sopivan merkkijono
 löytäessään aina tämän merkkijonon jälkeiseen merkkiin. Lopuksi se palauttaa
 listan, joka koostuu löydetyistä merkkijonoista.
 
-##Toteutetut yleis tietorakenteet
+## Toteutetut yleis tietorakenteet
 
 Toteutettuja yleis tietorakenteita ovat LinkedDeque, CustomSet ja CustomMap.
 
@@ -54,7 +54,7 @@ tietorakennetta avain-arvo parien ylläpidossa. Rakenne on hyödyllinen tulkin,
 toteutuksessa, koska se auttaa ylläpitämään ja hyödyntämään äärellisten 
 automaattien tiloissa, niiden tilanmuutoksia eri syötteillä eri tiloihin.
 
-##Saavutetut aikavaativuudet
+## Saavutetut aikavaativuudet
 
 RegEx määrittelyn mukaisten merkkijonojen keräämiseen merkkijonosta, jonka sisältämien
 merkkien määrä on n pitäisi pahimmassakin tapauksessa kulua aikaa enintään O(n^2) 
@@ -75,11 +75,11 @@ on O(n*m). Näitä ovat equals(), addAll(), removeAll(), containsAll()
 CustomMap:
 - Rakennettu luokan CustomSet varaan, joten aikavaativuudet ovat aikalailla samaa.
 
-##Puutteet ja parannusehdotukset
+## Puutteet ja parannusehdotukset
 - CustomMapin olisi voinut toteuttaa hajautustaulua hyödyntäen, jos aika olisi riittänyt.
 - RegEx operaatioiden määrää olisi toki voinut lisätä enemmän ajan kanssa.
 
-#Lähteet
+# Lähteet
 
 Kehityksessä apuna on käytetty erityisesti näitä sivustoja:
 

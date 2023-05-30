@@ -1,7 +1,7 @@
-#PerformanceTester Logs
+# PerformanceTester Logs
 
 ------------------------------------------------------------------------------------------------------------------------
-##Test1
+## Test1
 
 constructRegExTest
 RegEx 'xdf?|(sn+d|fg*)df|esd+(gk?|e+f)': 9.624651milliseconds
@@ -21,7 +21,7 @@ CustomMap tests with 100000objects
 Putting 100000 object pairs: 105.178105613seconds
 Average get: 0.511322millieconds
 ------------------------------------------------------------------------------------------------------------------------
-##Test 2
+## Test 2
 
 constructRegExTest
 RegEx 'xdf?|(sn+d|fg*)df|esd+(gk?|e+f)': 10.729348milliseconds
@@ -41,7 +41,7 @@ CustomMap tests with 100000objects
 Putting 100000 object pairs: 111.393493784seconds
 Average get: 0.793827millieconds
 ------------------------------------------------------------------------------------------------------------------------
-##Test 3
+## Test 3
 
 constructRegExTest
 RegEx 'xdf?|(sn+d|fg*)df|esd+(gk?|e+f)': 10.646713milliseconds

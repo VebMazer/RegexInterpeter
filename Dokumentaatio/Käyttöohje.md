@@ -1,6 +1,6 @@
-#Käyttöohje
+# Käyttöohje
 
-##RegEx toiminnan laajuus
+## RegEx toiminnan laajuus
 
 Toeteutettu tulkki hallitsee RegEx symbolit: *,+,?,|,\
 ja tavallisten sulkujen ( ) oikean käytön. Muita merkkejä
@@ -11,7 +11,7 @@ sitä ei tulisi käyttää syöte merkkijonoissa, eikä lausekkeiden määrittel
 pitäisi pääosin kohdella sitä, kuin paikassa ei olisi mitään, mutta poikkeuksia saatta
 olla läsnä.
 
-##Toiminnan testausta varten.
+## Toiminnan testausta varten.
 
 Ohjelmaa käytetään tekstikäyttöliittymän kautta. Sen ydin toiminnan vertailukohteena
 voi käyttää sivustoa: http://www.regexpal.com/
@@ -25,7 +25,7 @@ regexpal ja sivun kenttään Test String käytetään samaa merkkijonoa, kuin oh
 testauksessa(vaihtoehto 2), niin tulisi ohjelman palauttaa samat merkkijonot, jotka
 regexpal rajaa testimerkkijonosta hyväksytyiksi.
 
-##Tekstikäyttöliittymän käyttö ja toiminnallisuus
+## Tekstikäyttöliittymän käyttö ja toiminnallisuus
 
 Ohjelma pyytää käyttäjää valitsemaan listaamistaan toiminto vaihtoehdoista syöttämällä
 haluamansa vaihtoehdon numeron.
