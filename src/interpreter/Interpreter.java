@@ -1,7 +1,6 @@
 
 package interpreter;
 
-import dataStructures.CustomSet;
 import dataStructures.LinkedDeque;
 import java.util.Iterator;
 import java.util.Set;

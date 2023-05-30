@@ -18,13 +18,6 @@ public class NFABuilder {
     public String evalRegEx;
     public LinkedDeque<LinkedDeque<State>> operationStack;
     public LinkedDeque<Character> functionStack;
-//    public final String alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
-//    public final String alphabetEval = "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|å|ä|ö";
-//    public final String capsAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
-//    public final String capsAlphabetEval = "A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|Å|Ä|Ö";
-//    public final String numbers = "0123456789";
-//    public final String numbersEval = "0|1|2|3|4|5|6|7|8|9";
-    
 
     public Set<State> allNFAStates;
     
@@ -55,10 +48,6 @@ public class NFABuilder {
                     wasBackSlash = false;
                 }
             }
-            //-----------------untested section below-------------------
-            //else if(c == '[') i += evalUnionGroup(i);
-            //else if(c == '.') ;
-            //-------------------untested section above-----------------
             else if(!functionalInput(c)) push(c); 
             else if(functionStack.empty()) functionStack.addLast(c);
             else if(c == '(') functionStack.addLast(c);
@@ -95,19 +84,9 @@ public class NFABuilder {
      * @return Evaluointiin valmis regex merkkijono.
      */
     public String makeEvalRegex() {
-//        String evalRegex1 = "";
-//        //Adding things prior to adding concatenations.
-//        for (int i = 0; i < regex.length(); i++) {
-//            if(regex.charAt(i) == '[' && i-1 >= 0 && regex.charAt(i-1) != '\\') {
-//                int groupLength = unionGroupLength(i);
-//                evalRegex1 += unionGroupEvalString(i+1, i+groupLength-1);
-//                i += groupLength-1;
-//            } else if(regex.charAt(i) == '.' && i-1 >= 0 && regex.charAt(i-1) != '\\') {
-//                evalRegex1 += alphabetEval + '|' + capsAlphabetEval + '|' + numbersEval;
-//            } else evalRegex1 += regex.charAt(i);
-//        }
         String evalRegex1 = regex;
         String evalRegex2 = "";
+        
         //Adding concatenations
         for (int i = 0; i < evalRegex1.length()-1; i++) {
             char cLeft = evalRegex1.charAt(i);
@@ -133,64 +112,6 @@ public class NFABuilder {
         if(c == '¤' || c == '|' || c == '*' || c== '+' || c == '?' || c == '(' || c == ')')  return true;
         return false;
     }
-        
-//    public int unionGroupLength(int index) {
-//            int iterations = 0;
-//            while(regex.charAt(index++) != ']') iterations++;
-//            return iterations+1;
-//    }
-//    
-//    public String unionGroupEvalString(int index, int evalEndIndex) {
-//        String groupEvalString = "";
-//        if(index < evalEndIndex) {
-//            char last = regex.charAt(index);
-//            groupEvalString += "(" + last;
-//            if(index+1 < evalEndIndex) groupEvalString += "|";
-//            char next = '¤';
-//            for (int i = index+1; i < evalEndIndex; i++) {
-//                char c = regex.charAt(i);
-//                if(i-1 >= index) last = regex.charAt(i-1);
-//               else last = '¤';
-//                if(i+1 < evalEndIndex) last = regex.charAt(i+1);
-//              else next = '¤';
-//               if(c == '-' && last != '¤' && next != '¤') {
-//                   groupEvalString += findOrderString(last, next);
-//              } else groupEvalString += '|' + c;
-//            }
-//            groupEvalString += ")";
-//        }
-//        return groupEvalString;
-//    }
-//    
-//    public String findOrderString(char a, char z) {
-//        String orderedString = stringFromAtoZ(a, z, alphabet, alphabetEval);
-//        if(!orderedString.equals("")) return orderedString;
-//        orderedString = stringFromAtoZ(a, z, numbers, numbersEval);
-//        if(!orderedString.equals("")) return orderedString;
-//        orderedString = stringFromAtoZ(a, z, capsAlphabet, capsAlphabetEval);
-//        if(!orderedString.equals("")) return orderedString;
-//        return "-";
-//    }
-//    
-//    public String stringFromAtoZ(char a, char z, String orderlyString, String evalString) {
-//        char[] letters = orderlyString.toCharArray();
-//        String returnString = "";
-//        int startIndex = 0;
-//        int endIndex = 0;
-//        boolean startFound = false;
-//        for (int i = 0; i < letters.length; i++) {
-//            if(letters[i] == a)  {
-//                startFound = true;
-//                startIndex = i+1;
-//            }
-//            if(letters[i] == z) {
-//                endIndex = i;
-//                if(startFound) break;
-//            }
-//        }
-//        if(startFound && startIndex < endIndex) returnString = evalString.substring(startIndex*2, endIndex*2-1);
-//        return returnString;
-//    }
     
     /**
      * Kutsuu tilojen käsittely operaatioita sen mukaan, mikä merkki on pinossa.
@@ -281,81 +202,6 @@ public class NFABuilder {
         }
         return false;
     }
-    
-//    /**
-//     * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
-//     * jonosta ja lisää niistä muodostetun jonon operaatio pinoon.
-//     * @return Totuusarvo sen mukaan toteutuiko operaatio.
-//     */
-//    public boolean originalStar() {
-//        LinkedDeque<State> A;
-//        if(operationStack.empty()) return false;
-//        A = operationStack.pollLast();
-//        
-//        State startState = new State(interpreter.nextState++);
-//        State endState = new State(interpreter.nextState++);
-//        
-//        startState.addTransition('0', endState);
-//        startState.addTransition('0', A.getFirstElement());
-//        A.getLastElement().addTransition('0', endState);
-//        A.getLastElement().addTransition('0', A.getFirstElement());
-//        
-//        A.addLast(endState);
-//        A.addFirst(startState);
-//        
-//        allNFAStates.add(startState);
-//        allNFAStates.add(endState);
-//        
-//        operationStack.addLast(A);
-//        
-//        return true;
-//    }
-//    
-//    public boolean originalPlus() {
-//        LinkedDeque<State> A;
-//        if(operationStack.empty()) return false;
-//        A = operationStack.pollLast();
-//        
-//        State startState = new State(interpreter.nextState++);
-//        State endState = new State(interpreter.nextState++);
-//        
-//        startState.addTransition('0', A.getFirstElement());
-//        A.getLastElement().addTransition('0', endState);
-//        A.getLastElement().addTransition('0', A.getFirstElement());
-//        
-//        A.addLast(endState);
-//        A.addFirst(startState);
-//        
-//        allNFAStates.add(startState);
-//        allNFAStates.add(endState);
-//        
-//        operationStack.addLast(A);
-//        
-//        return true;
-//    }
-//    
-//    public boolean originalQuestion() {
-//        LinkedDeque<State> A;
-//        if(operationStack.empty()) return false;
-//        A = operationStack.pollLast();
-//        
-//        State startState = new State(interpreter.nextState++);
-//        State endState = new State(interpreter.nextState++);
-//        
-//        startState.addTransition('0', endState);
-//        startState.addTransition('0', A.getFirstElement());
-//        A.getLastElement().addTransition('0', endState);
-//        
-//        A.addLast(endState);
-//        A.addFirst(startState);
-//        
-//        allNFAStates.add(startState);
-//        allNFAStates.add(endState);
-//        
-//        operationStack.addLast(A);
-//        
-//        return true;
-//    }
     
     /**
      * Muodostaa tähti(*) operaatiota kuvaavat tilat viimeisestä
