@@ -115,7 +115,7 @@ public class UI {
      * Pyytää käyttäjää syöttämään toiminto numeron.
      */
     public void askForCommand() {
-        System.out.print("Enter an option number: ");
+        System.out.print("Enter a command number: ");
         input = scanner.next();
         System.out.println("");
     }
