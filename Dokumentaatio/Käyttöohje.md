@@ -32,18 +32,16 @@ haluamansa vaihtoehdon numeron.
 
 Käyttöliittymässä on kolme eri komento looppia, joiden suoritus etenee seuraavasti:
 
- Aloituslooppi, jossa käyttäjä voi valita vaihtoehdoista 1 ja 4: 
+ Aloituslooppi, jossa käyttäjä voi valita vaihtoehdoista 1 ja 0: 
 - 1: Pyytää käyttäjää määrittelemään säännöllisen lausekkeen ja siirtyy senjälkeen 
 ohjelman päälooppiin.
-- 4: Poistuu ohjelmasta.
+- 0: Poistuu ohjelmasta.
 
-Päälooppi sisältää toiminto vaihtoehdot 1 ja 4, jotka toimivat samalla tavoin, kuin 
-aloitusloopissa, sekä vaihtoehdot 2 ja 3:
-- 2: Pyytää käyttäjää syöttämään merkkijonon, josta kerätään viimeiseksi 
-määritellyn säännöllisen lausekkeen mukaiset merkkijonot. Sopivan merkkijonon 
-löytymisen jälkeen edetään etsinnässä löydetyn merkkijonon viimeistä merkkiä seuraavaan 
-merkkiin, joten alkuperäisessä merkkijonossa päällekkäin olevia merkkijonoja ei palauteta.
-- 3: siirtää käyttäjän debug looppiin.
+Päälooppi sisältää toiminto vaihtoehdot 1 ja 0, jotka toimivat samalla tavoin, kuin 
+aloitusloopissa, sekä vaihtoehdot 2, 3 ja 4:
+- 2: Pyytää käyttäjää syöttämään merkkijonon, josta kerätään viimeiseksi määritellyn säännöllisen lausekkeen mukaiset merkkijonot. Sopivan merkkijonon löytymisen jälkeen edetään etsinnässä löydetyn merkkijonon viimeistä merkkiä seuraavaan merkkiin, joten alkuperäisessä merkkijonossa päällekkäin olevia merkkijonoja ei palauteta.
+- 3: Pyytää käyttäjää syöttämään tiedostopolun tekstitiedostoon. Lukee sitten kyseisen tiedoston sisällön ja printtaa kaikki nykyisen regexin kanssa matchatut merkkijonot. (Päällekkäisiä matcheja ei palauteta.)
+- 4: siirtää käyttäjän debug looppiin.
 
 (Devaajalle tarkoitettu looppi, joka on ohjelman ydin toiminnan kannalta tarpeeton.)
 Debugloopin toiminto vaihtoehdot(5-9) tarjoavat toisen testaus työkalun ja tietoa
