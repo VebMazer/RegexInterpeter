@@ -1,4 +1,6 @@
-# RegexInterp
+# RegexInterpeter
+
+A regular expression interpreter. User can define simple regular expressions using brackets and/or the following symbols: *, |, +, ? \. User can then use the program to find the matching patterns from input strings.
 
 Dokumentaatio:
 
@@ -15,15 +17,3 @@ Dokumentaatio:
 [Käyttöohjeet](Dokumentaatio/Käyttöohje.md)
 
 [Javadoc](https://htmlpreview.github.io/?https://github.com/VebMazer/RegexInterp/blob/master/Dokumentointi/javadoc/index.html)
-
-[Viikkoraportti1](Dokumentaatio/Viikkoraportti1.md)
-
-[Viikkoraportti2](Dokumentaatio/Viikkoraportti2.md)
-
-[Viikkoraportti3](Dokumentaatio/Viikkoraportti3.md)
-
-[Viikkoraportti4](Dokumentaatio/Viikkoraportti4.md)
-
-[Viikkoraportti5](Dokumentaatio/Viikkoraportti5.md)
-
-[Viikkoraportti6](Dokumentaatio/Viikkoraportti6.md)

@@ -80,6 +80,9 @@ CustomMap:
 - RegEx operaatioiden määrää olisi toki voinut lisätä enemmän ajan kanssa.
 
 #Lähteet
+
 Kehityksessä apuna on käytetty erityisesti näitä sivustoja:
+
 http://www.codeproject.com/Articles/5412/Writing-own-regular-expression-parser
+
 http://www.regexpal.com/
