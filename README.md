@@ -10,10 +10,10 @@ The interpreter was originally created during my participation in the data struc
 
 [Toteutusdokumentti](documentation/Toteutusdokumentti.md)
 
+[Käyttöohjeet](documentation/Käyttöohje.md)
+
 [Testausdokumentti](documentation/Testausdokumentti.md)
 
 [TulkinAikavaativuus](documentation/TulkinAikavaativuus.jpg)
 
-[SuorituskykyTestiLog](documentation/PerformanceTesterLogs.md)
-
-[Käyttöohjeet](documentation/Käyttöohje.md)
+[SuorituskykyTestienLog](documentation/PerformanceTesterLogs.md)

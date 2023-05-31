@@ -1,6 +1,5 @@
-# PerformanceTester Logs
+# Performance Testing Logs
 
-------------------------------------------------------------------------------------------------------------------------
 ## Test1
 
 constructRegExTest
@@ -20,7 +19,8 @@ Average contains: 4.751914milliseconds
 CustomMap tests with 100000objects
 Putting 100000 object pairs: 105.178105613seconds
 Average get: 0.511322millieconds
-------------------------------------------------------------------------------------------------------------------------
+
+
 ## Test 2
 
 constructRegExTest
@@ -40,7 +40,8 @@ Average contains: 4.532204milliseconds
 CustomMap tests with 100000objects
 Putting 100000 object pairs: 111.393493784seconds
 Average get: 0.793827millieconds
-------------------------------------------------------------------------------------------------------------------------
+
+
 ## Test 3
 
 constructRegExTest
@@ -60,10 +61,9 @@ Average contains: 0.567234milliseconds
 CustomMap tests with 10000objects
 Putting 10000 object pairs: 0.83749231seconds
 Average get: 0.109237millieconds
-------------------------------------------------------------------------------------------------------------------------
+
 
 ## RegEx lausekkeen toteuttavien merkkijonojen etsintää merkkijonoista
-
 
 RegEx: a?n|bd+
 
