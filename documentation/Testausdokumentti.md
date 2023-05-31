@@ -20,7 +20,7 @@ CustomMap luokan toiminnallisuuden testaus:
 ## Ohjelman aikavaativuuksien testaus
 
 Tulkin käyttöä testattiin neljällä RegEx lausekkeella joilla etsittiin osumia erikokoisista satunnais merkkijonoista.
-- Katso [TulkinAikavaativuus.jpg](documentation/TulkinAikavaativuus.jpg) ja [PerformanceTesterLogs.md](PerformanceTesterLogs.md)
+- Katso [TulkinAikavaativuus.jpg](TulkinAikavaativuus.jpg) ja [PerformanceTesterLogs.md](PerformanceTesterLogs.md)
 
 Toteutettuja tietorakenteita testattiin myös jonkin verran. Kaikille tietorakenteille tehtiin alkioiden lisäys testi ja jonkin muun operaation testi.
 - Katso [PerformanceTesterLogs.md](PerformanceTesterLogs.md)
