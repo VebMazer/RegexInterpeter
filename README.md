@@ -2,18 +2,16 @@
 
 A regular expression interpreter. User can define simple regular expressions using parenthesis and/or the following symbols: *, |, +, ? \. User can then use the program to find the matching patterns from input strings.
 
-Dokumentaatio:
+### Documentation
 
-[Aihemäärittely](Dokumentaatio/Aihemäärittely.md)
+[Aihemäärittely](documentation/Aihemäärittely.md)
 
-[Toteutusdokumentti](Dokumentaatio/Toteutusdokumentti.md)
+[Toteutusdokumentti](documentation/Toteutusdokumentti.md)
 
-[Testausdokumentti](Dokumentaatio/Testausdokumentti.md)
+[Testausdokumentti](documentation/Testausdokumentti.md)
 
-[TulkinAikavaativuus](Dokumentaatio/TulkinAikavaativuus.jpg)
+[TulkinAikavaativuus](documentation/TulkinAikavaativuus.jpg)
 
-[SuorituskykyTestiLog](Dokumentaatio/PerformanceTesterLogs.md)
+[SuorituskykyTestiLog](documentation/PerformanceTesterLogs.md)
 
-[Käyttöohjeet](Dokumentaatio/Käyttöohje.md)
-
-[Javadoc](https://htmlpreview.github.io/?https://github.com/VebMazer/RegexInterp/blob/master/Dokumentointi/javadoc/index.html)
+[Käyttöohjeet](documentation/Käyttöohje.md)
