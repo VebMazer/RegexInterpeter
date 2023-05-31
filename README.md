@@ -1,6 +1,6 @@
 # RegexInterpeter
 
-A regular expression interpreter. User can define simple regular expressions using parenthesis and/or the following symbols: *, |, +, ? \. User can then use the program to find the matching patterns from input strings.
+A regular expression interpreter. User can define simple regular expressions using parenthesis: (), and/or the following symbols: *, |, +, ?, \\. User can then use the program to find the matching patterns from input strings.
 
 ### Documentation
 
