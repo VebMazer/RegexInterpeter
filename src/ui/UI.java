@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.io.File;
 
 /**
- * Luokka toimii teksti käyttöliittymänä tulkkia varten.
+ * User Interface class for the interpreter.
  */
 public class UI {
     public Interpreter interpreter;
@@ -20,7 +20,7 @@ public class UI {
     public String input;
     
     /**
-     * Luokan konstruktori.
+     * The Constructor initializes the objects internal variables.
      */
     public UI() {
         interpreter = new Interpreter();
@@ -30,25 +30,31 @@ public class UI {
         input = "";
     }
     
+
     /**
-     * Metodi joka sisältää käyttöliittymän taustaloopit ja käynnistää
-     * käyttöliittymän.
+     * Method that starts the UI and includes the main command loops.
      */
     public void run() {
         printIntro();
+        
+        // Starting command loop
         while(!input.equals("1") && !input.equals("0")) {
             printStartingCommandsList();
             askForCommand();
             if(input.equals("1")) defineRegEx();
         }
+        
+        // Main command loop
         while(!input.equals("0")) {
             printCommandsList();
             askForCommand();
             
-            if(input.equals("1")) defineRegEx();
-            else if(input.equals("2")) findMatchesInString();
-            else if(input.equals("3")) findMatchesInFile();
-            else if(input.equals("4")) {
+            if      (input.equals("1")) defineRegEx();
+            else if (input.equals("2")) findMatchesInString();
+            else if (input.equals("3")) findMatchesInFile();
+            else if (input.equals("4")) {
+                
+                // Debugging command loop
                 while(!input.equals("9") && !input.equals("0")) {
                     printDebuggingTools();
                     askForCommand();
@@ -56,14 +62,14 @@ public class UI {
                     if(input.equals("5")) traverseString();
                     else if(input.equals("6")) interpreter.dfaBuilder.printAllDFAStates();
                     else if(input.equals("7")) printEvalRegex();
-                    else if(input.equals("8")) printResults();
+                    else if(input.equals("8")) printTraversalTestResults();
                 }
             }
         }
     }
     
     /**
-     * Tulostetaan ohjelman intron sen käynnistyessä.
+     * Prints the UI introduction text.
      */
     public void printIntro() {
         System.out.println("Welcome to the regular expression interpreter program.");
@@ -72,7 +78,7 @@ public class UI {
     }
     
     /**
-     * Tulostaa aloitus loopin toiminto listan.
+     * Prints the commands available in the starting command loop.
      */
     public void printStartingCommandsList() {
         System.out.println("");
@@ -83,7 +89,7 @@ public class UI {
     }
     
     /**
-     * Tulostaa listan käyttöliittymän pääloopin toiminnoista.
+     * Prints the commands available in the main command loop.
      */
     public void printCommandsList() {
         System.out.println("");
@@ -99,7 +105,7 @@ public class UI {
     }
     
     /**
-     * Tulostaa listan debuggaus loopin toiminnoista.
+     * Prints the commands available in the debugging command loop.
      */
     public void printDebuggingTools() {
         System.out.println("");
@@ -116,7 +122,7 @@ public class UI {
     }
     
     /**
-     * Pyytää käyttäjää syöttämään toiminto numeron.
+     * Requests the user for an input command number.
      */
     public void askForCommand() {
         System.out.print("Enter a command number: ");
@@ -125,50 +131,67 @@ public class UI {
     }
     
     /**
-     * Metodi vastaanottaa käyttäjältä regex määrittelyjoukkoa vastaavan
-     * merkkijonon tulkin käytettäväksi.
+     * Method requests a string from the user and defines a new
+     * RegEx with it.
      */
     public void defineRegEx() {
         System.out.print("Define the RegEx: ");
         interpreter.nextState = 0;
         interpreter.constructRegEx(scanner.next());
+        
+        // Initialize the lists for the DFA traversal tests.
         strings = new LinkedDeque<>();
         booleans = new LinkedDeque<>();
     }
     
     /**
-     * Metodi vastaanottaa merkkijonon käyttäjältä, lisää sen listaan,
-     * testaa vastaako se määrittelyehtoja, lisää testin tuloksen listaan
-     * ja tulostaa sen.
+     * The method requests a string from the user, adds it to a list,
+     * tests whether or not it traverses in the RegEx DFA (not whether
+     * the state is accepting or not), adds the test result to a list
+     * and prints it.
      */
     public void traverseString() {
         System.out.print("Enter a string: ");
+        
+        // Request input and save it.
         String input = scanner.next();
         strings.addLast(input);
+        
+        // Apply the traversal test.
         boolean result = interpreter.testTraversal(input);
+        
+        // Save and print the result.
         booleans.addLast(result);
         System.out.println(result);
     }
     
     /**
-     * Tulostaa NFA:n muodostuksessa hyödynnettävän concatenaatiot
-     * symboleina sisältävän version alkuperäisestä RegEx lausekkeesta.
+     * Prints a version of the current Regex with a symbol added for each
+     * concatenation. Adding the concatenation symbols is helpful in
+     * NFA construction.
      */
     public void printEvalRegex() {
         System.out.println(interpreter.nfaBuilder.evalRegEx);
     }
     
     /**
-     * Pyytää käyttäjältä syötteen, josta kerätään RegEx lausekkeen
-     * mukaiset merkkijonot ja tulostetaan ne sitten käyttäjälle
-     * niiden kokonais lukumäärän kanssa.
+     * Asks the user for an input string, collects the substrings that 
+     * match the RegEx from it. Then prints all the matches and the
+     * total number of matches.
      */
     public void findMatchesInString() {
+
+        // Ask and read input.
         System.out.print("Enter a string: ");
         String input = scanner.next();
+        
+        // Find matches.
         Iterator<String> resultsIterator = interpreter.findMatchingStrings(input).iterator();
-        int matchesFound = 0;
+        
         System.out.println("MatchesFound:");
+        int matchesFound = 0;
+        
+        // Count the results and print them.
         while(resultsIterator.hasNext()) {
             matchesFound++;
             System.out.println(resultsIterator.next());
@@ -177,9 +200,9 @@ public class UI {
     }
     
     /**
-     * Tulostaa listan testatuista merkkijonoista tuloksineen.
+     * Prints a list of the tested strings with their results.
      */
-    public void printResults() {
+    public void printTraversalTestResults() {
         Iterator<String> stringIterator = strings.iterator();
         Iterator<Boolean> booleanIterator = booleans.iterator();
         while(stringIterator.hasNext()) {
@@ -188,8 +211,8 @@ public class UI {
     }
 
     /**
-     * Returns a string that contains all the content in the file found
-     * with the filepath string.
+     * Returns a string that contains all the content in the file that was
+     * found with the filepath string.
      */
     public String readFile(String filepath) {
         String result = "";
@@ -209,11 +232,16 @@ public class UI {
      * finds all the patterns in it that match the currently defined regex.
      */
     public void findMatchesInFile() {
+
+        // Request a filepath from the user and read the file.
         System.out.print("Enter filepath: ");
         String input = scanner.next();
         input = readFile(input);
+        
+        // Stops the method if the file was not found, or if it was empty.
         if (input.equals("")) return;
         
+        // Count the number of matches found and print them.
         Iterator<String> resultsIterator = interpreter.findMatchingStrings(input).iterator();
         int matchesFound = 0;
         System.out.println("MatchesFound:");
