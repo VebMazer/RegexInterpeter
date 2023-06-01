@@ -68,7 +68,7 @@ public class UI {
     public void printIntro() {
         System.out.println("Welcome to the regular expression interpreter program.");
         System.out.println("* Supported operators are: '|', '*', '+', '?'.");
-        System.out.println("* Also supports the use of parenthesis: '(' ')' and backslash '\\'");
+        System.out.println("* Also supports the use of parenthesis: '(' ')' and backslash '\\'.");
     }
     
     /**
@@ -78,7 +78,7 @@ public class UI {
         System.out.println("");
         System.out.println("Options:");
         System.out.println("1: Define a regular expression.");
-        System.out.println("0: Exits the program.");
+        System.out.println("0: Exit the program.");
         System.out.println("");
     }
     
@@ -94,7 +94,7 @@ public class UI {
         System.out.println("2: Test a string to find patterns matching the RegEx.");
         System.out.println("3: Test a file to find patterns matching the RegEx.");
         System.out.println("4: Use debugging tools.");
-        System.out.println("0: Exits the program.");
+        System.out.println("0: Exit the program.");
         System.out.println("");
     }
     
@@ -106,12 +106,12 @@ public class UI {
         System.out.println("Currently defined RegEx is: " + interpreter.regex);
         System.out.println("");
         System.out.println("Debugging options:");
-        System.out.println("5: Test whether or not a string traverses the regex automata.");
-        System.out.println("6: Show current DFA data");
-        System.out.println("7: Shows the edited Regex that is used for NFA construction.");
-        System.out.println("8: Prints the results of all the traversal tests you have made so far.");
-        System.out.println("9: Exits debugging tools");
-        System.out.println("0: Exits the program.");
+        System.out.println("5: Test whether or not a string traverses the regex DFA.");
+        System.out.println("6: Show current DFA data.");
+        System.out.println("7: Show the edited Regex that is used for NFA construction.");
+        System.out.println("8: Print the results of all the traversal tests you have made so far.");
+        System.out.println("9: Exit debugging tools.");
+        System.out.println("0: Exit the program.");
         System.out.println("");
     }
     
@@ -199,7 +199,7 @@ public class UI {
                 result += fileReader.nextLine();
             }
         } catch (Exception e) {
-            System.out.println("File not found");
+            System.out.println("File not found.");
         }
         return result;
     }
