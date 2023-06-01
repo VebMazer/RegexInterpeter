@@ -38,9 +38,12 @@ public class NFABuilder {
      */
     public boolean createNFA() {
         evalRegEx = makeEvalRegex();
+        
         boolean wasBackSlash = false;
+        
         for (int i = 0; i < evalRegEx.length(); i++) {
             char c = evalRegEx.charAt(i);
+            
             if(c == '\\' && !wasBackSlash) wasBackSlash = true;
             else if(wasBackSlash) {
                 if(c != '¤') {
@@ -52,6 +55,7 @@ public class NFABuilder {
             else if(functionStack.empty()) functionStack.addLast(c);
             else if(c == '(') functionStack.addLast(c);
             else if(c == ')') {
+                
                 while( functionStack.getLastElement() != '(') {
                     if(!evaluate()) {
                         return false;
@@ -59,11 +63,13 @@ public class NFABuilder {
                 }
                 functionStack.pollLast();
             } else {
+                
                 while(!functionStack.empty() && priority(c, functionStack.getLastElement())) {
                     if(!evaluate()) {
                         return false;
                     }
                 }
+                
                 functionStack.addLast(c);
             }
         }
@@ -91,14 +97,18 @@ public class NFABuilder {
         for (int i = 0; i < evalRegex1.length()-1; i++) {
             char cLeft = evalRegex1.charAt(i);
             char cRight = evalRegex1.charAt(i+1);
+            
             evalRegex2 += cLeft;
+            
             if(!functionalInput(cLeft) || cLeft == ')' || cLeft == '*' || cLeft == '+' || cLeft == '?') {
+                
                 if(!functionalInput(cRight) || cRight == '(') {
                     char ch = '¤';
                     evalRegex2 += ch;
                 } 
             }
         }
+        
         evalRegex2 += evalRegex1.charAt(evalRegex1.length()-1);
         return evalRegex2;
     }
@@ -118,8 +128,10 @@ public class NFABuilder {
      * @return true operaation onnistuessa.
      */
     public boolean evaluate() {
+        
         if(!functionStack.empty()) {
             char functionChar = functionStack.pollLast();
+            
             switch(functionChar) {
                 case '¤': return concat();
                 case '|': return union();
@@ -128,6 +140,7 @@ public class NFABuilder {
                 case '?': return reducedQuestion();
             }
         }
+        
         return false;
     }
     
@@ -138,16 +151,16 @@ public class NFABuilder {
      * @return Yleensä true jos RegEx symboli on oikealla.
      */
     public boolean priority(char left, char right) {
-        if(left == right) return true;
-        else if(left == '*') return false;
+        if(left == right)     return true;
+        else if(left == '*')  return false;
         else if(right == '*') return true;
-        else if(left == '+') return false;
+        else if(left == '+')  return false;
         else if(right == '+') return true;
-        else if(left == '?') return false;
+        else if(left == '?')  return false;
         else if(right == '?') return true;
-        else if(left == '¤') return false;
+        else if(left == '¤')  return false;
         else if(right == '¤') return true;
-        else if(left == '|') return false;
+        else if(left == '|')  return false;
         
         return true;
     }
@@ -188,9 +201,12 @@ public class NFABuilder {
      */
     public boolean concat() {
         LinkedDeque<State> A, B;
+        
         if(!operationStack.empty()) {
             B = operationStack.pollLast();
+        
         } else return false;
+        
         if(!operationStack.empty()) {
             A = operationStack.pollLast();
             
@@ -200,6 +216,7 @@ public class NFABuilder {
             operationStack.addLast(A);
             return true;
         }
+        
         return false;
     }
     
@@ -209,9 +226,9 @@ public class NFABuilder {
      * @return Totuusarvo sen mukaan toteutuiko operaatio.
      */
     public boolean reducedStar() {
-        LinkedDeque<State> A;
         if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
+        
+        LinkedDeque<State> A = operationStack.pollLast();
         
         State endState = new State(interpreter.nextState++);
         
@@ -234,9 +251,9 @@ public class NFABuilder {
      * @return Totuusarvo sen mukaan toteutuiko operaatio.
      */
     public boolean reducedPlus() {
-        LinkedDeque<State> A;
         if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
+        
+        LinkedDeque<State> A = operationStack.pollLast();
         
         A.getLastElement().addTransition('0', A.getFirstElement());
         
@@ -251,9 +268,9 @@ public class NFABuilder {
      * @return Totuusarvo sen mukaan toteutuiko operaatio.
      */
     public boolean reducedQuestion() {
-        LinkedDeque<State> A;
         if(operationStack.empty()) return false;
-        A = operationStack.pollLast();
+        
+        LinkedDeque<State> A = operationStack.pollLast();
         
         A.getFirstElement().addTransition('0', A.getLastElement());
         
@@ -269,21 +286,27 @@ public class NFABuilder {
      */
     public boolean union() {
         LinkedDeque<State> A, B;
+        
         if(!operationStack.empty()) {
             B = operationStack.pollLast();
+        
         } else return false;
+        
         if(!operationStack.empty()) {
             A = operationStack.pollLast();
             
             State startState = new State(interpreter.nextState++);
             State endState = new State(interpreter.nextState++);
+            
             startState.addTransition('0', A.getFirstElement());
             startState.addTransition('0', B.getFirstElement());
+            
             A.getLastElement().addTransition('0', endState);
             B.getLastElement().addTransition('0', endState);
             
             B.addLast(endState);
             A.addFirst(startState);
+            
             A.connectDequeToLast(B);
             
             allNFAStates.add(startState);
@@ -293,6 +316,7 @@ public class NFABuilder {
             
             return true;
         }
+        
         return false;
     }
     
@@ -301,20 +325,26 @@ public class NFABuilder {
      */
     public void printAllStates() {
         Iterator<State> iterator = allNFAStates.iterator();
+        
         while(iterator.hasNext()) {
             State state = iterator.next();
-            Iterator<Character> chIter = state.transitions.keySet().iterator();
+            
             String output = "";
             if(state.acceptingState) output += "_Accepting_";
             output += state.stateID + ":";
+
+            Iterator<Character> chIter = state.transitions.keySet().iterator();
+            
             while(chIter.hasNext()) {
                 char c = chIter.next();
                 Iterator<State> nextStatesIter = state.transitions.get(c).iterator();
                 output += "_" + c + ">";
+                
                 while(nextStatesIter.hasNext()) {
                     output += nextStatesIter.next().stateID + ",";
                 }
             }
+            
             System.out.println(output);
             System.out.println("");
         }

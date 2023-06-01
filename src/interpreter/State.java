@@ -52,6 +52,7 @@ public class State {
         consStates = NFAStates;
         acceptingState = false;
         transitions = new CustomMap<>();
+        
         Iterator<State> iterator = NFAStates.iterator();
         while(iterator.hasNext()) {
             if(iterator.next().acceptingState) {
@@ -68,6 +69,7 @@ public class State {
      */
     public void addTransitions(char c, Set<State> states) {
         Iterator<State> stateIterator = states.iterator();
+        
         while(stateIterator.hasNext()) {
             addTransition(c, stateIterator.next());
         }
@@ -79,23 +81,28 @@ public class State {
      * @param state Tila, joka seuraa merkin ilmentymistä.
      */
     public void addTransition(char character, State state) {
+        
         if(transitions.containsKey(character)) {
             transitions.get(character).add(state);
+        
         } else {
             Set<State> states = new CustomSet<>();
             states.add(state);
             transitions.put(character, states);
         }
     }
+
      /**
       * Poistaa kaikki annettuun tilaan johtavat muunnokset.
       * @param state Tila johon johtavat muunnokset poistetaan.
       */
     public void removeTransitionsTo(State state) {
         Iterator<Character> iterator = transitions.keySet().iterator();
+        
         while(iterator.hasNext()) {
             char ch = iterator.next();
             Set<State> states = transitions.get(ch);
+            
             if(states.contains(state)) {
                 states.remove(state);
                 if(!states.isEmpty()) transitions.replace(ch, states);
@@ -118,15 +125,19 @@ public class State {
      * @return Totuusarvo, joka kertoo onko tämä tila umpikuja.
      */
     public boolean deadEnd() {
-        if(acceptingState) return false;
+        if(acceptingState)        return false;
         if(transitions.isEmpty()) return true;
+        
         Iterator<Set<State>> iterator1 = transitions.values().iterator();
+        
         while(iterator1.hasNext()) {
             Iterator<State> iterator2 = iterator1.next().iterator();
+            
             while(iterator2.hasNext()) {
                 if(!iterator2.next().equals(this)) return false;
             }
         }
+        
         return true;
     }
     
@@ -137,19 +148,24 @@ public class State {
      */
     public Set<Character> getAllTransitInputs() {
         Set<Character> inputs = new CustomSet<>();
+        
         if(!consStates.isEmpty()) {
             Iterator<State> iterator1 = consStates.iterator();
+            
             while(iterator1.hasNext()) {
                 State state = iterator1.next();
                 Set<Character> characters = state.transitions.keySet();
+                
                 if(!characters.isEmpty()) {
                     Iterator<Character> iterator2 = characters.iterator();
+                    
                     while(iterator2.hasNext()) {
                         inputs.add(iterator2.next());
                     }
                 }
             }
         }
+        
         inputs.remove('0');
         return inputs;
     }
@@ -162,9 +178,11 @@ public class State {
      */
     @Override
     public boolean equals(Object ob) {
-        if(ob == null) return false;
+        if(ob == null)                       return false;
         if(ob.getClass() != this.getClass()) return false;
+        
         State state = (State) ob;
+        
         if(this.stateID == state.stateID) return true;
         return false;
     }

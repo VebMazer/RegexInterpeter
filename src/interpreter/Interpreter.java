@@ -24,8 +24,10 @@ public class Interpreter {
     public Interpreter() {
         regex = "";
         string = "";
+        
         operationStack = new LinkedDeque<>();
         functionStack = new LinkedDeque<>();
+        
         nextState = 0;
     }
     
@@ -37,10 +39,12 @@ public class Interpreter {
      */
     public boolean testTraversal(String str) {
         string = str;
+        
         if(regex.equals("")) {
             System.out.println("No regex defined");
             return false;
         } 
+        
         return traverseString(0, string.length(), regexDFADeque.getFirstElement());
     }
     
@@ -53,13 +57,18 @@ public class Interpreter {
      */
     public boolean traverseString(int i, int length, State state) {
         if(i >= length) return true;
+        
         Set<State> states = state.getTransitions(string.charAt(i));
+        
         if(states != null && !states.isEmpty()) {
             Iterator<State> iterator = states.iterator();
+            
             while(iterator.hasNext()) {
+                
                 if(traverseString(i+1, length, iterator.next())) return true;
             }
         }
+        
         return false;
     }
     
@@ -74,13 +83,17 @@ public class Interpreter {
     public LinkedDeque<String> findMatchingStrings(String inputString) {
         LinkedDeque<String> matches = new LinkedDeque<>();
         int index = 0;
+        
         while(index < inputString.length()) {
             String str = buildMatch(index, "", inputString, regexDFADeque.getFirstElement());
+            
             if(!str.equals("")) {
                 matches.addLast(str);
                 index += str.length();
+            
             } else index++;
         }
+        
         return matches;
     }
     
@@ -97,21 +110,27 @@ public class Interpreter {
      * aikaan.
      */
     public String buildMatch(int index, String consStr, String inputString, State state) {
-            if(index < inputString.length()) {
-                char c = inputString.charAt(index);
-                Set<State> states = state.getTransitions(c);
-                if(states != null && states.size() > 0) {
-                    //DFA States only ever have one following state for an input character.
+        if(index < inputString.length()) {
+            char c = inputString.charAt(index);
+            Set<State> states = state.getTransitions(c);
+            
+            if(states != null && states.size() > 0) {
+                    
+                //DFA States only ever have one following state for an input character.
                     String build = buildMatch(index+1, consStr+c, inputString, states.iterator().next());
-                    if(!build.equals("")) return build;
+                    
+                    if(!build.equals(""))    return build;
                     if(state.acceptingState) return consStr;
+                    
                     return "";
-                }
-                if(state.acceptingState) return consStr;
-                return "";
             }
+            
             if(state.acceptingState) return consStr;
             return "";
+        }
+        
+        if(state.acceptingState) return consStr;
+        return "";
     }
     
     /**
@@ -122,19 +141,25 @@ public class Interpreter {
     public boolean constructRegEx(String str) {
         regex = str;
         nextState = 0;
+        
         operationStack = new LinkedDeque<>();
         functionStack = new LinkedDeque<>();
+        
         nfaBuilder = new NFABuilder(this);
+        
         if(!nfaBuilder.createNFA()) System.out.println("Failed to create NFA");
         else {
             //nfaBuilder.printAllStates();
             dfaBuilder = new DFABuilder(this);
+            
             if(!dfaBuilder.NFAtoDFA()) System.out.println("Failed to transform NFA to DFA");  
             else {
+                
                 dfaBuilder.optimizeDFA(regexDFADeque);
                 return true;
             }
         }
+        
         return false;
     }
 

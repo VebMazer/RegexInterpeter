@@ -79,13 +79,16 @@ public class DFABuilder {
      */
     public boolean connectsBack(State currentState, char c ,Set<State> NFAStates) {
         Iterator<State> dfaStatesIterator = allDFAStates.iterator();
+        
         while(dfaStatesIterator.hasNext()) {
             State dfaState = dfaStatesIterator.next();
+            
             if(dfaState.consStates.equals(NFAStates)) {
                 currentState.addTransition(c, dfaState);
                 return true;
             }
         }
+        
         return false;
     }
     
@@ -101,11 +104,14 @@ public class DFABuilder {
     public Set<State> epsilonClosure(Set<State> states) {
         Set<State> epsilonTransitStates = new CustomSet<>();
         Iterator<State> iterator = states.iterator();
+        
         while(iterator.hasNext()) {
             State state = iterator.next();
+            
             epsilonTransitStates.add(state);
             epsilonTransitStates.addAll(reachStates(state, '0'));
         }
+        
         return epsilonTransitStates;
     }
     
@@ -120,15 +126,19 @@ public class DFABuilder {
      */
     public Set<State> reachStates(State state, char input) {
         Set<State> transitStates = new CustomSet<>();
-        Set<State> inputResults = state.getTransitions(input);
+        Set<State> inputResults  = state.getTransitions(input);
+        
         if(inputResults != null && !inputResults.isEmpty()) {
             Iterator<State> iterator = inputResults.iterator();
+            
             while(iterator.hasNext()) {
                 State st = iterator.next();
+                
                 transitStates.add(st);
                 transitStates.addAll(reachStates(st, input));
             }
         }
+        
         return transitStates;
     }
     
@@ -143,10 +153,13 @@ public class DFABuilder {
     public Set<State> move(char input, Set<State> states) {
         Set<State> transitStates =  new CustomSet<>();
         Iterator<State> iterator1 = states.iterator();
+        
         while(iterator1.hasNext()) {
             Set<State> inputResults = iterator1.next().getTransitions(input);
+            
             if(inputResults != null) {
                 Iterator<State> iterator2 = inputResults.iterator();
+                
                 while(iterator2.hasNext()) transitStates.add(iterator2.next());
             }
         }
@@ -162,21 +175,29 @@ public class DFABuilder {
     public LinkedDeque<State> optimizeDFA(LinkedDeque<State> DFADeque) {
         LinkedDeque<State> statesToBeRemoved = new LinkedDeque<>();
         LinkedDeque<State> newDFADeque = new LinkedDeque<>();
+        
         Iterator<State> iterator = DFADeque.iterator();
+        
         while(iterator.hasNext()) {
             State st = iterator.next();
+            
             if(!st.acceptingState && st.transitions.isEmpty()) {
                 statesToBeRemoved.addLast(st);
+            
             } else newDFADeque.addLast(st);
         }
+        
         iterator = DFADeque.iterator();
+        
         while(iterator.hasNext()) {
             State st1 = iterator.next();
             Iterator<State> iterator2 = statesToBeRemoved.iterator();
+            
             while(iterator2.hasNext()) {
                 st1.removeTransitionsTo(iterator.next());
             }
         }
+        
         DFADeque = newDFADeque;
         return DFADeque;
     }
@@ -186,20 +207,26 @@ public class DFABuilder {
      */
     public void printAllDFAStates() {
         Iterator<State> iterator = allDFAStates.iterator();
+        
         while(iterator.hasNext()) {
             State state = iterator.next();
-            Iterator<Character> chIter = state.transitions.keySet().iterator();
+            
             String output = "";
             if(state.acceptingState) output += "_Accepting_";
             output += state.stateID + ":";
+
+            Iterator<Character> chIter = state.transitions.keySet().iterator();
+            
             while(chIter.hasNext()) {
                 char c = chIter.next();
                 Iterator<State> nextStatesIter = state.transitions.get(c).iterator();
                 output += "_" + c + ">";
+                
                 while(nextStatesIter.hasNext()) {
                     output += nextStatesIter.next().stateID + ",";
                 }
             }
+            
             System.out.println(output);
             System.out.println("");
         }

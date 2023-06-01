@@ -38,10 +38,14 @@ public class LinkedDeque<E> implements Iterable<E>{
     public void addFirst(E element) {
         Node node = new Node();
         node.element = element;
+        
         if(first != null) {
+            
             node.right = first;
             first.left = node;
+        
         } else last = node;
+        
         first = node;
         size++;
     }
@@ -53,10 +57,14 @@ public class LinkedDeque<E> implements Iterable<E>{
     public void addLast(E element) {
         Node node = new Node();
         node.element = element;
+        
         if(last != null) {
-            node.left = last;
+            
+            node.left  = last;
             last.right = node;
-            } else first = node;
+        
+        } else first = node;
+        
         last = node;
         size++;
     }
@@ -68,9 +76,12 @@ public class LinkedDeque<E> implements Iterable<E>{
      */
     public E pollFirst() {
         if(first == null) throw new NullPointerException();
+        
         E element = first.element;
-        first = first.right;
+        first     = first.right;
+        
         size--;
+        
         return element;
     }
     
@@ -81,9 +92,12 @@ public class LinkedDeque<E> implements Iterable<E>{
      */
     public E pollLast() {
         if(last == null) throw new NullPointerException();
+        
         E element = last.element;
-        last = last.left;
+        last      = last.left;
+        
         size--;
+        
         return element;
     }
     
@@ -94,6 +108,7 @@ public class LinkedDeque<E> implements Iterable<E>{
     public E getFirstElement() {
         return first.element;
     }
+
      /**
       * Palauttaa listan lopussa olevan elementin.
       * @return Listan lopussa ollut elementti.
@@ -108,10 +123,14 @@ public class LinkedDeque<E> implements Iterable<E>{
      * @param deque Jonoon liitettävä jono.
      */
     public void connectDequeToLast(LinkedDeque<E> deque) {
+        
         if(deque != null) {
             this.last.right = deque.first;
+            
             deque.first.left = this.last;
+            
             this.last = deque.last;
+            
             this.size += deque.size();
         }
     }
@@ -133,9 +152,11 @@ public class LinkedDeque<E> implements Iterable<E>{
      */
     public boolean contains(Object o) {
         Iterator<E> iterator = this.iterator();
+        
         while(iterator.hasNext()) {
             if(iterator.next().equals(o)) return true;
         }
+        
         return false;
     }
     
@@ -166,7 +187,9 @@ public class LinkedDeque<E> implements Iterable<E>{
         @Override
         public E next() {
             Node node = current;
+            
             current = current.right;
+            
             return node.element;
         }
         

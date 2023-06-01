@@ -19,7 +19,8 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
      */
     public CustomSet() {
         array = (E[]) new Object[8];
-        size = 0;
+        
+        size      = 0;
         nextIndex = 0;
     }
     
@@ -48,12 +49,16 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
     @Override
     public boolean add(E e) {
         for (int i = 0; i < array.length; i++) {
+            
             if(e != null && e.equals(array[i])) return false;
         }
+        
         if(nextIndex == array.length) array = reSizeArray(size*2);
         array[nextIndex] = e;
+        
         nextIndex++;
         size++;
+        
         return true;
     }
     
@@ -66,9 +71,11 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
     public boolean addAll(Collection<? extends E> c) {
         Iterator<? extends E> iterator = c.iterator();
         boolean changed = false;
+        
         while(iterator.hasNext()) {
             if(this.add(iterator.next())) changed = true;
         }
+        
         return changed;
     }
     
@@ -80,52 +87,68 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
      */
     public E[] reSizeArray(int newSize) {
         E[] newArray = (E[]) new Object[newSize];
+        
         nextIndex = 0;
+        
         for (int i = 0; i < array.length; i++) {
+            
             if(array[i] != null) {
+                
                 newArray[nextIndex] = array[i];
                 nextIndex++;
             }
         }
+        
         return newArray;
     }
     
     @Override
     public boolean remove(Object o) {
         for (int i = 0; i < array.length; i++) {
+            
             if(array[i] != null && array[i].equals(o)) {
+                
                 array[i] = null;
                 size--;
+                
                 return true;
             }
         }
+        
         return false;
     }
     
         @Override
     public boolean removeAll(Collection<?> c) {
         Iterator<?> iterator = c.iterator();
+        
         boolean changed = false;
+        
         while(iterator.hasNext()) {
             if(this.remove(iterator.next())) changed = true;
         }
+        
         return changed;
     }
 
     @Override
     public boolean contains(Object o) {
         for (int i = 0; i < array.length; i++) {
+            
             if(array[i] != null && array[i].equals(o)) return true;
         }
+        
         return false;
     }
     
     @Override
     public boolean containsAll(Collection<?> c) {
         Iterator<?> iterator = c.iterator();
+        
         while(iterator.hasNext()) {
             if(!this.contains(iterator.next())) return false;
         }
+        
         return true;
     }
     
@@ -133,8 +156,11 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
     public boolean equals(Object o) {
         if(o == null) return false;
         if(this.getClass() != o.getClass()) return false;
+        
         Set set = (Set) o;
+        
         if(this.size() != set.size()) return false;
+        
         return this.containsAll(set);
     }
     
@@ -164,9 +190,13 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean changed = false;
+        
         for (int i = 0; i < array.length; i++) {
+            
             if(array[i] != null) {
+                
                 if(!c.contains(array[i])) {
+                    
                     array[i] = null;
                     size--;
                     changed = true;
@@ -182,13 +212,14 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
     @Override
     public void clear() {
         array = (E[]) new Object[8];
+        
         size = 0;
         nextIndex = 0;
     }
     
         @Override
     public Iterator<E> iterator() {
-         return new ElementsIterator();
+        return new ElementsIterator();
     }
     
     private class ElementsIterator implements Iterator<E> {
@@ -196,19 +227,23 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
         
         public ElementsIterator() {
             next = -1;
+            
             findNext();
         }
 
         @Override
         public boolean hasNext()  {
             if(next == nextIndex) return false;
+            
             return array[next] != null;
         }
         
         @Override
         public E next() {
             int current = next;
+            
             findNext();
+            
             return array[current];
         }
         
@@ -217,8 +252,11 @@ public class CustomSet<E> implements Set<E>, Iterable<E> {
          */
         public void findNext() {
             next++;
+            
             for (int i = next; i < nextIndex; i++) {
+                
                 if(array[i] != null) {
+                    
                     next = i;
                     break;
                 }
