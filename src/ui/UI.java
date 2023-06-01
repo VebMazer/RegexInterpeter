@@ -13,21 +13,24 @@ import java.io.File;
  */
 public class UI {
     public Interpreter interpreter;
-    public LinkedDeque<String> strings;
-    public LinkedDeque<Boolean> booleans;
-    
+
     public Scanner scanner;
     public String input;
+    
+    public LinkedDeque<String> traversalTestStrings;
+    public LinkedDeque<Boolean> traversalTestResults;
     
     /**
      * The Constructor initializes the objects internal variables.
      */
     public UI() {
         interpreter = new Interpreter();
-        strings = new LinkedDeque<>();
-        booleans = new LinkedDeque<>();
+
         scanner = new Scanner(System.in);
         input = "";
+        
+        traversalTestStrings = new LinkedDeque<>();
+        traversalTestResults = new LinkedDeque<>();
     }
     
 
@@ -140,8 +143,8 @@ public class UI {
         interpreter.constructRegEx(scanner.next());
         
         // Initialize the lists for the DFA traversal tests.
-        strings = new LinkedDeque<>();
-        booleans = new LinkedDeque<>();
+        traversalTestStrings = new LinkedDeque<>();
+        traversalTestResults = new LinkedDeque<>();
     }
     
     /**
@@ -155,13 +158,13 @@ public class UI {
         
         // Request input and save it.
         String input = scanner.next();
-        strings.addLast(input);
+        traversalTestStrings.addLast(input);
         
         // Apply the traversal test.
         boolean result = interpreter.testTraversal(input);
         
         // Save and print the result.
-        booleans.addLast(result);
+        traversalTestResults.addLast(result);
         System.out.println(result);
     }
     
@@ -203,8 +206,8 @@ public class UI {
      * Prints a list of the tested strings with their results.
      */
     public void printTraversalTestResults() {
-        Iterator<String> stringIterator = strings.iterator();
-        Iterator<Boolean> booleanIterator = booleans.iterator();
+        Iterator<String> stringIterator = traversalTestStrings.iterator();
+        Iterator<Boolean> booleanIterator = traversalTestResults.iterator();
         while(stringIterator.hasNext()) {
             System.out.println(stringIterator.next() + ":   " + booleanIterator.next());
         }
